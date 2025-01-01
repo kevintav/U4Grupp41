@@ -5,10 +5,26 @@ import java.awt.*;
 
 public class Frame extends JButton {
     private boolean clicked=false;
-    public Frame(int width, int height, MainFrame mainFrame, Color color) {
+
+    /**
+     * Constructor som används för att visa index på varje knapp.
+     */
+    public Frame(MainFrame mainFrame, Color color, int index) {
         this.setBackground(color);
         this.setVisible(true);
-        this.setSize(width, height);
+        this.setText(String.valueOf(index));
+    }
+
+    /**
+     * Constructor som används för att skapa en ram i MainPanel.
+     * @param mainFrame
+     * @param color
+     * Author Christoffer Björnheimer
+     */
+    public Frame(MainFrame mainFrame, Color color) {
+        this.setBackground(color);
+        this.setVisible(true);
+
 
     }
 

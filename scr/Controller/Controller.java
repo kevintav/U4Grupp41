@@ -5,7 +5,7 @@ public class Controller {
     private MainFrame view;
     public Controller(){
 
-        int sizeOfBoard=5;
+        int sizeOfBoard=10;
         view = new MainFrame(800, 800, this, sizeOfBoard);
 
     }

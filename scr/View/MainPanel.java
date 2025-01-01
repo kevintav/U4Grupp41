@@ -18,8 +18,13 @@ public class MainPanel extends JPanel {
 
         for (int i = 0; i < sizeOfBoard * sizeOfBoard; i++) {
             final int index = i;
-            frames[i] = new Frame(100, 100, mainFrame, new Color(200 - (i * 10) / sizeOfBoard, 130, 130));
-                frames[i].addActionListener(e -> Controller.getClickedButton(index));
+            frames[i] = new Frame(mainFrame, new Color(200 - (i * 10) / sizeOfBoard, 130, 130));
+
+            /* //TODO den här constructorn kan användas för att visa alla knapparna med index.
+            frames[i] = new Frame(mainFrame, new Color(200 - (i * 10) / sizeOfBoard, 130, 130), index);
+            */
+
+            frames[i].addActionListener(e -> Controller.getClickedButton(index));
             add(frames[i]);
         }
 
