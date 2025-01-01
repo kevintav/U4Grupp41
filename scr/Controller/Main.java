@@ -1,5 +1,7 @@
 package Controller;
 
 public class Main {
-    //TODO test..
+    public static void main(String[] args) {
+        Controller theController = new Controller();
+    }
 }
