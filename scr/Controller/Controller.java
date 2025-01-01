@@ -5,6 +5,6 @@ public class Controller {
     private final MainFrame view;
 
     public Controller(){
-        view = new MainFrame(1000, 500, this);
+        view = new MainFrame(300, 300, this);
     }
 }

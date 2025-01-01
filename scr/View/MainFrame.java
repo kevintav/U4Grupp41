@@ -7,7 +7,7 @@ public class MainFrame extends JFrame {
     private Controller controller;
 
     public MainFrame(int width, int height, Controller controller) {
-        super("Bakery");
+        super("Game");
         this.controller = controller;
         this.setResizable(false);
         this.setSize(width, height);
