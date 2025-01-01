@@ -17,4 +17,9 @@ public class MainFrame extends JFrame {
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
     }
+    public void revealFrame(int index) {
+        mainPanel.revealFrame(index);
+        mainPanel.updateBoard();
+    }
+
 }

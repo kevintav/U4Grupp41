@@ -1,10 +1,20 @@
 package Controller;
 import View.MainFrame;
-import javax.swing.*;
-public class Controller {
-    private final MainFrame view;
 
+public class Controller {
+    private MainFrame view;
     public Controller(){
-        view = new MainFrame(700, 700, this, 9);
+
+        int sizeOfBoard=5;
+        view = new MainFrame(800, 800, this, sizeOfBoard);
+
     }
+
+    public static void getClickedButton(int index) {
+        System.out.println("tryckte på " + index);
+    }
+
+
+
+
 }
