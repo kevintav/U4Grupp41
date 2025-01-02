@@ -62,12 +62,20 @@ public class MainPanel extends JPanel {
         }
     }
 
+    public void randomizeBoard(int sizeOfBoard){
+    Frame[] randomizedFrames=new Frame[sizeOfBoard*2];
+    //TODO Skapa spelbräde som slumpar fram olika former av skatter
+        Random randomize = new Random();
+        int random = randomize.nextInt(100);
+
+
+    this.frames=randomizedFrames;
+    }
 
     public void revealFrame(int index) {
-        if (!frames[index].isClicked()) {
+        System.out.println("Points gained:" + frames[index].getValue());
             frames[index].reveal();
-            System.out.println("Points gained:" + frames[index].getValue());
-        }
+
     }
 
     public void updateBoard() {

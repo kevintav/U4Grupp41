@@ -7,7 +7,7 @@ public class Controller {
 
     public Controller() {
 
-        int sizeOfBoard = 10; //Kan inte sättas högre än 20, men det går om man tar bort specialfärgen
+        int sizeOfBoard = 5; //Kan inte sättas högre än 20, men det går om man tar bort specialfärgen
         view = new MainFrame(800, 800, this, sizeOfBoard);
 
     }
