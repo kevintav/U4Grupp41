@@ -10,37 +10,45 @@ public class MainFrame extends JFrame {
     private ScoreBoard scoreBoard;
     private Controller controller;
 
+    private int lastClickedIndex;
+
     public MainFrame(int boardWidth, int boardHeight, Controller controller, int sizeOfBoard) {
         super("Game");
         this.controller = controller;
-
 
         int scoreboardHeight = 100;
         int frameWidth = boardWidth;
         int frameHeight = boardHeight + scoreboardHeight;
 
-
         this.setSize(frameWidth, frameHeight);
         this.setResizable(false);
         this.setLayout(new BorderLayout());
 
-
         scoreBoard = new ScoreBoard(frameWidth, scoreboardHeight);
         this.add(scoreBoard, BorderLayout.NORTH);
 
-
         mainPanel = new MainPanel(boardWidth, boardHeight, this, sizeOfBoard);
         this.add(mainPanel, BorderLayout.CENTER);
-
 
         this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         this.setVisible(true);
     }
 
-    public void revealFrame(int index) {
-        mainPanel.revealFrame(index);
-        mainPanel.updateBoard();
+    public void updateLastClickedIndex(int newIndex) {
+        this.lastClickedIndex = newIndex;
+        System.out.println("lastClickedIndex uppdaterad till: " + lastClickedIndex);
+    }
 
+
+    public int getLastClickedIndex() {
+        return lastClickedIndex;
+    }
+
+
+    public void revealFrame() {
+        mainPanel.revealFrame(lastClickedIndex);
+        mainPanel.updateBoard();
         scoreBoard.updateScore(10);
     }
 }
+

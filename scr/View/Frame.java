@@ -28,7 +28,7 @@ public class Frame extends JButton {
     }
 
     public void reveal() {
-        this.setBackground(Color.BLACK);
+        this.setBackground(Color.WHITE); //Denna måste ändras sen till att visa typ ett attribute som är en subklass. (treasure, trap)
         clicked=true;
     }
 
