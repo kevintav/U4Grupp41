@@ -22,7 +22,7 @@ public class MainFrame extends JFrame {
 
         this.setSize(frameWidth, frameHeight);
         this.setResizable(false);
-        this.setLayout(new BorderLayout());
+        this.setLayout(new BorderLayout(1,5));
 
         scoreBoard = new ScoreBoard(frameWidth, scoreboardHeight);
         this.add(scoreBoard, BorderLayout.NORTH);
@@ -39,16 +39,5 @@ public class MainFrame extends JFrame {
         System.out.println("lastClickedIndex uppdaterad till: " + lastClickedIndex);
     }
 
-
-    public int getLastClickedIndex() {
-        return lastClickedIndex;
-    }
-
-
-    public void revealFrame() {
-        mainPanel.revealFrame(lastClickedIndex);
-        mainPanel.updateBoard();
-        scoreBoard.updateScore(10);
-    }
 }
 

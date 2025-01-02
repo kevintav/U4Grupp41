@@ -12,7 +12,7 @@ public class MainPanel extends JPanel {
     public MainPanel(int width, int height, MainFrame mainFrame, int sizeOfBoard) {
         this.sizeOfBoard = sizeOfBoard;
         this.frames = new Frame[sizeOfBoard * sizeOfBoard];
-        this.setBackground(new Color(250, 250, 250));
+        this.setBackground(Color.white);
         this.setSize(width, height);
 
         for (int i = 0; i < sizeOfBoard * sizeOfBoard; i++) {
@@ -31,12 +31,14 @@ public class MainPanel extends JPanel {
             add(frames[i]);
         }
 
-        this.setLayout(new GridLayout(sizeOfBoard, sizeOfBoard, 3, 3));
+        this.setLayout(new GridLayout(sizeOfBoard, sizeOfBoard, 1, 1));
         this.setVisible(true);
     }
 
-    public int getLastClickedIndex() {
-        return lastClickedIndex;
+    public void resetBoard(){
+        for (Frame frame : frames) {
+            frame.hidePanel();
+        }
     }
 
 
