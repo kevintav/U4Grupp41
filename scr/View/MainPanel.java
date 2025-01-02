@@ -20,18 +20,24 @@ public class MainPanel extends JPanel {
         this.setBackground(Color.white);
         this.setSize(width, height);
 
+
         for (int i = 0; i < sizeOfBoard * sizeOfBoard; i++) {
             Random randomize = new Random();
-            int random = randomize.nextInt(3);
-            final int index = i;
-            if (random == 2) {
 
+            int random = randomize.nextInt(100);
+            final int index = i;
+            if (random >= 50 && random <= 70) {
                 frames[i] = new TreasureFrame(mainFrame, new Color(200 - (i * 10) / sizeOfBoard, 130, 130));
+            } else if (random >= 10 && random <= 20) {
+                frames[i] = new TrapFrame(mainFrame, new Color(200 - (i * 10) / sizeOfBoard, 130, 130));
+
+            } else if (random==33) {
+                frames[i] = new TreasureFrame(mainFrame, new Color(200 - (i * 10) / sizeOfBoard, 130, 130));
+                frames[i].setValue(100);
 
             } else {
                 frames[i] = new Frame(mainFrame, new Color(200 - (i * 10) / sizeOfBoard, 130, 130));
             }
-
 
             frames[i].addActionListener(e -> {
                 mainFrame.updateLastClickedIndex(index);
@@ -57,15 +63,10 @@ public class MainPanel extends JPanel {
 
 
     public void revealFrame(int index) {
-        // Om rutan inte redan är öppnad, avslöja den
         if (!frames[index].isClicked()) {
             frames[index].reveal();
             System.out.println("Points gained:" + frames[index].getValue());
         }
-    }
-
-    public void testStuff() {
-
     }
 
     public void updateBoard() {
@@ -75,5 +76,8 @@ public class MainPanel extends JPanel {
                 frames[i].reveal(); // Om rutan är klickad, avslöja den
             }
         }
+    }
+    public Frame getFrame(int index){
+        return frames[index];
     }
 }

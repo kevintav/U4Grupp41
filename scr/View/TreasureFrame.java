@@ -4,6 +4,7 @@ import java.awt.*;
 
 public class TreasureFrame extends Frame{
     private int value= 10;
+    private Color background= Color.orange;
 
 
     public TreasureFrame(MainFrame mainFrame, Color color) {
@@ -11,15 +12,26 @@ public class TreasureFrame extends Frame{
 
     }
 
+
+
     @Override
     public void reveal() {
-        this.setBackground(Color.ORANGE);
+        this.setBackground(background);
         this.setText(String.valueOf(value)+"p");
+
         setClicked(true);
     }
 
     @Override
-    public int getValue(){
-        return value;
+    public void setValue(int value) {
+        this.value = value;
+    }
+
+    @Override
+    public String getValue(){
+        if(value==100){
+            System.out.println("You found a big hidden treasure");
+        }
+        return String.valueOf(value);
     }
 }

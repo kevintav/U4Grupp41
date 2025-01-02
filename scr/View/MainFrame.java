@@ -15,13 +15,13 @@ public class MainFrame extends JFrame {
         super("Game");
         this.controller = controller;
 
-        int scoreboardHeight = 100;
+        int scoreboardHeight = 150;
         int frameWidth = boardWidth;
         int frameHeight = boardHeight + scoreboardHeight;
 
         this.setSize(frameWidth, frameHeight);
         this.setResizable(false);
-        this.setLayout(new BorderLayout(1,5));
+        this.setLayout(new BorderLayout(1,1));
 
         scoreBoard = new ScoreBoard(frameWidth, scoreboardHeight);
         this.add(scoreBoard, BorderLayout.NORTH);
@@ -36,7 +36,13 @@ public class MainFrame extends JFrame {
     public void updateLastClickedIndex(int newIndex) {
         this.lastClickedIndex = newIndex;
         System.out.println("lastClickedIndex uppdaterad till: " + lastClickedIndex);
+        scoreBoard.setGameMessage("Du fick " + mainPanel.getFrame(lastClickedIndex).getValue() + " Poäng");
     }
+
+    public int getLastClickedIndex() {
+        return lastClickedIndex;
+    }
+
 
 }
 

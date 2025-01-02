@@ -6,6 +6,7 @@ import java.awt.*;
 public class Frame extends JButton {
     private boolean clicked = false;
 
+
     /**
      * Constructor som används för att visa index på varje knapp.
      */
@@ -44,7 +45,9 @@ public class Frame extends JButton {
     }
 
 
-    public int getValue() {
+    public String getValue() {
+    return String.valueOf(0);}
 
-    return 0;}
+    public void setValue(int value){
+    }
 }
