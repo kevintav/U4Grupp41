@@ -20,29 +20,30 @@ public class MainPanel extends JPanel {
         this.setBackground(Color.white);
         this.setSize(width, height);
 
-
+        //TODO Måste implementera så spelbrädet har riktiga treasures.
+        //I DENNA LOOP SLUMPAS ETT SPELBRÄDE
         for (int i = 0; i < sizeOfBoard * sizeOfBoard; i++) {
             Random randomize = new Random();
 
             int random = randomize.nextInt(100);
             final int index = i;
-            if (random >= 50 && random <= 70) {
+            if (random >= 50 && random <= 70) { //VANLIGT TREASURE, 2/10 CHANS
                 frames[i] = new TreasureFrame(mainFrame, new Color(200 - (i * 10) / sizeOfBoard, 130, 130));
-            } else if (random >= 10 && random <= 20) {
+
+            } else if (random >= 10 && random <= 20) { // TRAPFRAME 1/10 CHANS
                 frames[i] = new TrapFrame(mainFrame, new Color(200 - (i * 10) / sizeOfBoard, 130, 130));
 
-            } else if (random==33) {
+            } else if (random == 33) { //OVANLIG EPICLOOT, 1/100 CHANS
                 frames[i] = new TreasureFrame(mainFrame, new Color(200 - (i * 10) / sizeOfBoard, 130, 130));
                 frames[i].setValue(100);
+                frames[i].makeEpicLoot();
 
-            } else {
+            } else { //TOM RUTA, GER NOLL POÄNG
                 frames[i] = new Frame(mainFrame, new Color(200 - (i * 10) / sizeOfBoard, 130, 130));
             }
 
-            frames[i].addActionListener(e -> {
+                frames[i].addActionListener(e -> {
                 mainFrame.updateLastClickedIndex(index);
-
-
                 revealFrame(index);
                 updateBoard();
             });
@@ -77,7 +78,8 @@ public class MainPanel extends JPanel {
             }
         }
     }
-    public Frame getFrame(int index){
+
+    public Frame getFrame(int index) {
         return frames[index];
     }
 }

@@ -9,7 +9,11 @@ public class TreasureFrame extends Frame{
 
     public TreasureFrame(MainFrame mainFrame, Color color) {
         super(mainFrame, color);
+    }
 
+
+    public void makeEpicLoot(){
+        this.background=Color.magenta;
     }
 
 
@@ -29,9 +33,14 @@ public class TreasureFrame extends Frame{
 
     @Override
     public String getValue(){
-        if(value==100){
-            System.out.println("You found a big hidden treasure");
+        if(!isClicked()){
+            if(value==100){
+                System.out.println("You found a big hidden treasure");
+            }
+            return String.valueOf(value);
         }
-        return String.valueOf(value);
+        else {
+            return String.valueOf(0);
+        }
     }
 }

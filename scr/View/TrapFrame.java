@@ -12,7 +12,9 @@ public class TrapFrame extends Frame {
 
     @Override
     public String getValue(){
-        return String.valueOf(value);
+        if(!isClicked()) {
+            return String.valueOf(value);
+        } return "0";
     }
 
     @Override

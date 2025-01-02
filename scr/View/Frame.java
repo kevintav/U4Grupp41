@@ -50,4 +50,7 @@ public class Frame extends JButton {
 
     public void setValue(int value){
     }
+
+    public void makeEpicLoot() {
+    }
 }

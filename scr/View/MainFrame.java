@@ -33,10 +33,19 @@ public class MainFrame extends JFrame {
         this.setVisible(true);
     }
 
+    //TODO det här ska nog ligga i antingen model eller i controller. den hanterar poäng. men jag har implementerat ett system för att få poängen
     public void updateLastClickedIndex(int newIndex) {
         this.lastClickedIndex = newIndex;
-        System.out.println("lastClickedIndex uppdaterad till: " + lastClickedIndex);
-        scoreBoard.setGameMessage("Du fick " + mainPanel.getFrame(lastClickedIndex).getValue() + " Poäng");
+        if(!mainPanel.getFrame(lastClickedIndex).isClicked()){
+            if(mainPanel.getFrame(lastClickedIndex).getValue().equals("100")){
+                scoreBoard.setGameMessage("DU HITTADE EN HEMLIG SKATT OCH FICK: " + mainPanel.getFrame(lastClickedIndex).getValue() + ", GRATTIS!");
+                scoreBoard.updateScore(Integer.parseInt(mainPanel.getFrame(lastClickedIndex).getValue()));
+            } else{
+                scoreBoard.setGameMessage("Du fick " + mainPanel.getFrame(lastClickedIndex).getValue() + " Poäng");
+                scoreBoard.updateScore(Integer.parseInt(mainPanel.getFrame(lastClickedIndex).getValue()));
+            }
+
+        }
     }
 
     public int getLastClickedIndex() {
