@@ -2,10 +2,12 @@ package View;
 
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 
 public class ScoreBoard extends JPanel {
     private JLabel scoreLabel;
-    private int score = 1337;
+    private int score = 0;
     private JButton resetButton;
     private JButton startButton;
 
@@ -38,5 +40,9 @@ public class ScoreBoard extends JPanel {
     public void updateScore(int points) {
         this.score += points;
         scoreLabel.setText("Score: " + score);
+    }
+
+    public int getScore(){
+        return score;
     }
 }

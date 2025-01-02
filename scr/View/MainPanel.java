@@ -1,28 +1,41 @@
 package View;
 
 import Controller.Controller;
+
 import javax.swing.*;
 import java.awt.*;
+import java.util.Random;
 
 public class MainPanel extends JPanel {
     private int sizeOfBoard;
     private Frame[] frames;
     private int lastClickedIndex = -1;
+    private ScoreBoard scoreBoard;
+    private MainFrame mainFrame;
 
     public MainPanel(int width, int height, MainFrame mainFrame, int sizeOfBoard) {
+        this.mainFrame = mainFrame;
         this.sizeOfBoard = sizeOfBoard;
         this.frames = new Frame[sizeOfBoard * sizeOfBoard];
         this.setBackground(Color.white);
         this.setSize(width, height);
 
         for (int i = 0; i < sizeOfBoard * sizeOfBoard; i++) {
+            Random randomize = new Random();
+            int random = randomize.nextInt(3);
             final int index = i;
-            frames[i] = new Frame(mainFrame, new Color(200 - (i * 10) / sizeOfBoard, 130, 130));
+            if (random == 2) {
+
+                frames[i] = new TreasureFrame(mainFrame, new Color(200 - (i * 10) / sizeOfBoard, 130, 130));
+
+            } else {
+                frames[i] = new Frame(mainFrame, new Color(200 - (i * 10) / sizeOfBoard, 130, 130));
+            }
 
 
             frames[i].addActionListener(e -> {
                 mainFrame.updateLastClickedIndex(index);
-                System.out.println("Knapp tryckt, index: " + index);
+
 
                 revealFrame(index);
                 updateBoard();
@@ -35,7 +48,8 @@ public class MainPanel extends JPanel {
         this.setVisible(true);
     }
 
-    public void resetBoard(){
+
+    public void resetBoard() {
         for (Frame frame : frames) {
             frame.hidePanel();
         }
@@ -46,7 +60,12 @@ public class MainPanel extends JPanel {
         // Om rutan inte redan är öppnad, avslöja den
         if (!frames[index].isClicked()) {
             frames[index].reveal();
+            System.out.println("Points gained:" + frames[index].getValue());
         }
+    }
+
+    public void testStuff() {
+
     }
 
     public void updateBoard() {

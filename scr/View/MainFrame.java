@@ -9,7 +9,6 @@ public class MainFrame extends JFrame {
     private MainPanel mainPanel;
     private ScoreBoard scoreBoard;
     private Controller controller;
-
     private int lastClickedIndex;
 
     public MainFrame(int boardWidth, int boardHeight, Controller controller, int sizeOfBoard) {
