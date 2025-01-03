@@ -58,4 +58,7 @@ public class Frame extends JButton {
 
     public void makeEpicLoot() {
     }
+
+    public int getPartOfTreasure() {
+    return -1;}
 }

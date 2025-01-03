@@ -5,12 +5,18 @@ import java.awt.*;
 public class TreasureFrame extends Frame{
     private int value= 10;
     private Color background= Color.orange;
+    private int partOfTreasure;
 
 
-    public TreasureFrame(MainFrame mainFrame, Color color) {
+    public TreasureFrame(MainFrame mainFrame, Color color, int partOfTreasure) {
         super(mainFrame, color);
+        this.partOfTreasure=partOfTreasure;
     }
 
+    @Override
+    public int getPartOfTreasure() {
+        return partOfTreasure;
+    }
 
     public void makeEpicLoot(){
         this.background=Color.magenta;

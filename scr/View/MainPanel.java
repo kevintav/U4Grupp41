@@ -1,7 +1,5 @@
 package View;
 
-import Controller.Controller;
-
 import javax.swing.*;
 import java.awt.*;
 import java.util.Random;
@@ -10,7 +8,6 @@ public class MainPanel extends JPanel {
     private int sizeOfBoard;
     private Frame[] frames;
     private int lastClickedIndex = -1;
-    private ScoreBoard scoreBoard;
     private MainFrame mainFrame;
 
     public MainPanel(int width, int height, MainFrame mainFrame, int sizeOfBoard) {
@@ -19,34 +16,38 @@ public class MainPanel extends JPanel {
         this.frames = new Frame[sizeOfBoard * sizeOfBoard];
         this.setBackground(Color.white);
         this.setSize(width, height);
+        int treasureNbr = 1;
 
-        //TODO Måste implementera så spelbrädet har riktiga treasures.
-        //I DENNA LOOP SLUMPAS ETT SPELBRÄDE
         for (int i = 0; i < sizeOfBoard * sizeOfBoard; i++) {
             Random randomize = new Random();
-
-            int random = randomize.nextInt(100);
+            int randomPlace = randomize.nextInt(100);
+            int randomTreasure = randomize.nextInt(4);
             final int index = i;
-            if (random >= 50 && random <= 70) { //VANLIGT TREASURE, 2/10 CHANS
-                frames[i] = new TreasureFrame(mainFrame, new Color(200 - (i * 10) / sizeOfBoard, 130, 130));
 
-            } else if (random >= 10 && random <= 20) { // TRAPFRAME 1/10 CHANS
-                frames[i] = new TrapFrame(mainFrame, new Color(200 - (i * 10) / sizeOfBoard, 130, 130));
+            if (randomPlace <= 5) {
+                int[] placeEm = treasureShape(randomTreasure, sizeOfBoard, i);
+                if (frames[i] == null && placeEm.length > 0 && isValidPlacement(placeEm)) {
+                    for (int k : placeEm) {
+                        if (k != -1 && k < frames.length) {
+                            frames[k] = new TreasureFrame(mainFrame, new Color(200 - (i * 10) / sizeOfBoard, 130, 130), treasureNbr);
+                            //frames[k].setText(String.valueOf(treasureNbr + "-" + randomTreasure));
+                        }
+                    }
+                }
+                treasureNbr++;
+            }
 
-            } else if (random == 33) { //OVANLIG EPICLOOT, 1/100 CHANS
-                frames[i] = new TreasureFrame(mainFrame, new Color(200 - (i * 10) / sizeOfBoard, 130, 130));
-                frames[i].setValue(100);
-                frames[i].makeEpicLoot();
-
-            } else { //TOM RUTA, GER NOLL POÄNG
+            if (frames[i] == null) {
                 frames[i] = new Frame(mainFrame, new Color(200 - (i * 10) / sizeOfBoard, 130, 130));
             }
 
+            if (frames[i] != null) {
                 frames[i].addActionListener(e -> {
-                mainFrame.updateLastClickedIndex(index);
-                revealFrame(index);
-                updateBoard();
-            });
+                    mainFrame.updateLastClickedIndex(index);
+                    revealFrame(index);
+                    updateBoard();
+                });
+            }
 
             add(frames[i]);
         }
@@ -55,34 +56,90 @@ public class MainPanel extends JPanel {
         this.setVisible(true);
     }
 
-
     public void resetBoard() {
         for (Frame frame : frames) {
             frame.hidePanel();
         }
     }
 
-    public void randomizeBoard(int sizeOfBoard){
-    Frame[] randomizedFrames=new Frame[sizeOfBoard*2];
-    //TODO Skapa spelbräde som slumpar fram olika former av skatter
-        Random randomize = new Random();
-        int random = randomize.nextInt(100);
+    public int[] treasureShape(int type, int sizeOfBoard, int startPosition) {
+        int[] positions = new int[5];
+        boolean isValid = true;
 
+        if (type == 0) {
+            positions[0] = startPosition;
+            positions[1] = startPosition + 1;
+            positions[2] = startPosition + sizeOfBoard;
+            positions[3] = startPosition + sizeOfBoard + 1;
+            positions[4] = -1;
 
-    this.frames=randomizedFrames;
+            if (startPosition % sizeOfBoard == sizeOfBoard - 1 || positions[3] >= sizeOfBoard * sizeOfBoard) {
+                isValid = false;
+            }
+        } else if (type == 1) {
+            positions[0] = startPosition;
+            positions[1] = startPosition + sizeOfBoard - 1;
+            positions[2] = startPosition + sizeOfBoard;
+            positions[3] = startPosition + sizeOfBoard + 1;
+            positions[4] = startPosition + 2 * sizeOfBoard;
+
+            if (
+                    positions[1] >= sizeOfBoard * sizeOfBoard || positions[1] < 0 ||
+                            positions[2] >= sizeOfBoard * sizeOfBoard || positions[2] < 0 ||
+                            positions[3] >= sizeOfBoard * sizeOfBoard || positions[3] < 0 ||
+                            positions[4] >= sizeOfBoard * sizeOfBoard || positions[4] < 0 ||
+                            (startPosition % sizeOfBoard == 0 && positions[1] % sizeOfBoard != sizeOfBoard - 1) ||
+                            (startPosition % sizeOfBoard == sizeOfBoard - 1 && positions[3] % sizeOfBoard != 0)
+            ) {
+                return new int[]{-1, -1, -1, -1, -1};
+            }
+        } else if (type == 2) {
+            positions[0] = startPosition;
+            positions[1] = startPosition + 1;
+            positions[2] = -1;
+            positions[3] = -1;
+            positions[4] = -1;
+
+            if (startPosition % sizeOfBoard == sizeOfBoard - 1) {
+                isValid = false;
+            }
+        } else if (type == 3) {
+            positions[0] = startPosition;
+            positions[1] = -1;
+            positions[2] = -1;
+            positions[3] = -1;
+            positions[4] = -1;
+        }
+
+        return isValid ? positions : new int[0];
+    }
+
+    public boolean checkIfRevealed(int treasureNbr){
+        int count=0;
+        for(int i = 0 ; i<frames.length; i++){
+            if(treasureNbr==frames[i].getPartOfTreasure())
+                count++;
+        }
+    return true;}
+
+    public boolean isValidPlacement(int[] positions) {
+        for (int pos : positions) {
+            if (pos != -1 && (pos >= frames.length || frames[pos] != null)) {
+                return false;
+            }
+        }
+        return true;
     }
 
     public void revealFrame(int index) {
         System.out.println("Points gained:" + frames[index].getValue());
-            frames[index].reveal();
-
+        frames[index].reveal();
     }
 
     public void updateBoard() {
-        // Uppdatera hela brädet genom att kontrollera varje ruta
         for (int i = 0; i < frames.length; i++) {
             if (frames[i].isClicked()) {
-                frames[i].reveal(); // Om rutan är klickad, avslöja den
+                frames[i].reveal();
             }
         }
     }
