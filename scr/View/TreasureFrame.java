@@ -12,6 +12,7 @@ public class TreasureFrame extends Frame{
     public TreasureFrame(MainFrame mainFrame, Color color, int partOfTreasure) {
         super(mainFrame, color);
         this.partOfTreasure=partOfTreasure;
+
     }
 
     @Override
@@ -28,12 +29,14 @@ public class TreasureFrame extends Frame{
     @Override
     public void reveal() {
         this.setBackground(background);
-        //this.setText("X");
+        this.setText("X");
         setClicked(true);
     }
 
     public void fullReveal(){
-        this.setBorder(new LineBorder(Color.DARK_GRAY,3,true));
+        //this.setBorder(new LineBorder(Color.DARK_GRAY,3,true));
+        this.setText("S");
+        this.setBackground(Color.ORANGE);
         setClicked(true);
 
     }

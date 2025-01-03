@@ -25,7 +25,8 @@ public class Frame extends JButton {
     public Frame(MainFrame mainFrame, Color color) {
         this.setBackground(color);
         this.setVisible(true);
-
+        this.setForeground(Color.WHITE);
+        this.setFont(new Font("Arial", Font.BOLD, 15));
     }
 
     public void hidePanel(){
@@ -39,7 +40,9 @@ public class Frame extends JButton {
     public void reveal() {
         if(!isClicked()){
             this.setBackground(Color.WHITE);
-            //this.setText(String.valueOf("X"));//Denna måste ändras sen till att visa typ ett attribute som är en subklass. (treasure, trap)
+            this.setForeground(Color.GRAY);
+            this.setText(String.valueOf("X"));//Denna måste ändras sen till att visa typ ett attribute som är en subklass. (treasure, trap)
+
             clicked = true;
         }
 
