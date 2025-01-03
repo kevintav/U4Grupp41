@@ -1,13 +1,34 @@
 package View;
 
 import java.awt.*;
+import java.util.Random;
 
 public class TrapFrame extends Frame {
     private int value = -10;
     private Color background= Color.RED;
+    private String penalty;
 
     public TrapFrame(MainFrame mainFrame, Color color) {
         super(mainFrame, color);
+        Random random=new Random();
+
+        //Generate random penalty
+        int choice = random.nextInt(3);
+        switch(choice){
+            case 0:
+                this.penalty="killCrew";
+                break;
+            case 1:
+                this.penalty="stealPoints";
+                break;
+            case 2:
+                this.penalty="losePoints";
+                break;
+        }
+    }
+
+    public String getPenalty(){
+        return penalty;
     }
 
     @Override
