@@ -24,7 +24,7 @@ public class MainPanel extends JPanel {
             int randomTreasure = randomize.nextInt(4);
             final int index = i;
 
-            if (randomPlace <= 20) {
+            if (randomPlace <= 10) {
                 int[] placeEm = treasureShape(randomTreasure, sizeOfBoard, i);
                 if (frames[i] == null && placeEm.length > 0 && isValidPlacement(placeEm)) {
                     for (int k : placeEm) {
@@ -35,6 +35,10 @@ public class MainPanel extends JPanel {
                     }
                 }
                 treasureNbr++;
+            } else if(randomPlace >=90){
+                if (frames[i] == null) {
+                    frames[i] = new TrapFrame(mainFrame, new Color(120, 130, 130));
+                }
             }
 
             if (frames[i] == null) {
@@ -66,6 +70,7 @@ public class MainPanel extends JPanel {
         int[] positions = new int[5];
         boolean isValid = true;
 
+        //TODO lägg till fler treasureShapes.
         if (type == 0) {
             positions[0] = startPosition;
             positions[1] = startPosition + 1;

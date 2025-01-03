@@ -20,7 +20,7 @@ public class TrapFrame extends Frame {
     @Override
     public void reveal() {
         this.setBackground(background);
-        this.setText(String.valueOf(value)+"p");
+        this.setText("X");
         setClicked(true);
     }
 }
