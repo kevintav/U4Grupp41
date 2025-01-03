@@ -24,7 +24,7 @@ public class MainPanel extends JPanel {
             int randomTreasure = randomize.nextInt(4);
             final int index = i;
 
-            if (randomPlace <= 10) {
+            if (randomPlace <= 20) {
                 int[] placeEm = treasureShape(randomTreasure, sizeOfBoard, i);
                 if (frames[i] == null && placeEm.length > 0 && isValidPlacement(placeEm)) {
                     for (int k : placeEm) {
@@ -76,7 +76,7 @@ public class MainPanel extends JPanel {
             if (startPosition % sizeOfBoard == sizeOfBoard - 1 || positions[3] >= sizeOfBoard * sizeOfBoard) {
                 isValid = false;
             }
-        } else if (type == 1) {
+        } else if (type == 1) { // STAR(suger)
             positions[0] = startPosition;
             positions[1] = startPosition + sizeOfBoard - 1;
             positions[2] = startPosition + sizeOfBoard;
@@ -86,12 +86,16 @@ public class MainPanel extends JPanel {
             if (positions[1] >= sizeOfBoard * sizeOfBoard || positions[1] < 0 ||
                     positions[2] >= sizeOfBoard * sizeOfBoard || positions[2] < 0 ||
                     positions[3] >= sizeOfBoard * sizeOfBoard || positions[3] < 0 ||
-                    positions[4] >= sizeOfBoard * sizeOfBoard || positions[4] < 0 ||
-                    (startPosition % sizeOfBoard == 0 && positions[1] % sizeOfBoard != sizeOfBoard - 1) ||
-                    (startPosition % sizeOfBoard == sizeOfBoard - 1 && positions[3] % sizeOfBoard != 0)
-            ) {
-                return new int[]{-1, -1, -1, -1, -1};
+                    positions[4] >= sizeOfBoard * sizeOfBoard || positions[4] < 0) {
+                isValid = false;
             }
+
+            if ((startPosition % sizeOfBoard == 0 || startPosition % sizeOfBoard == sizeOfBoard - 1) ||
+                    (startPosition + sizeOfBoard - 1) % sizeOfBoard == sizeOfBoard - 1 ||
+                    (startPosition + sizeOfBoard) / sizeOfBoard == sizeOfBoard - 1) {
+                isValid = false;
+            }
+
         } else if (type == 2) {
             positions[0] = startPosition;
             positions[1] = startPosition + 1;
@@ -155,9 +159,18 @@ public class MainPanel extends JPanel {
             }
         }
 
+        int check = 0;
+        for (int i = 0; i < frames.length; i++) {
+            if (frames[i].isClicked()) check++;
+        } if (check==frames.length) resetBoard();
+
     }
 
     public Frame getFrame(int index) {
         return frames[index];
+    }
+
+    public int getSizeOfBoard() {
+        return sizeOfBoard;
     }
 }

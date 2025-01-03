@@ -52,6 +52,8 @@ public class MainFrame extends JFrame {
         return lastClickedIndex;
     }
 
-
+    public int getMainPanelSize(){
+        return mainPanel.getSizeOfBoard();
+    }
 }
 

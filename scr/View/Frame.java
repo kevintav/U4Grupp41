@@ -26,11 +26,15 @@ public class Frame extends JButton {
         this.setBackground(color);
         this.setVisible(true);
         this.setForeground(Color.WHITE);
-        this.setFont(new Font("Arial", Font.BOLD, 15));
+        this.setMargin(new Insets(0,0,0,0));
+        this.setFont(new Font("Arial", Font.BOLD, 40));
     }
 
     public void hidePanel(){
         clicked=false;
+        this.setBackground(new Color(120, 130, 130));
+        this.setText("");
+
     }
 
     public void setClicked(boolean clicked) {
