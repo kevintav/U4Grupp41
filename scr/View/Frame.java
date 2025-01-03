@@ -39,7 +39,7 @@ public class Frame extends JButton {
     public void reveal() {
         if(!isClicked()){
             this.setBackground(Color.WHITE);
-            this.setText(String.valueOf("X"));//Denna måste ändras sen till att visa typ ett attribute som är en subklass. (treasure, trap)
+            //this.setText(String.valueOf("X"));//Denna måste ändras sen till att visa typ ett attribute som är en subklass. (treasure, trap)
             clicked = true;
         }
 
@@ -61,4 +61,8 @@ public class Frame extends JButton {
 
     public int getPartOfTreasure() {
     return -1;}
+
+    public void fullReveal() {
+
+    }
 }

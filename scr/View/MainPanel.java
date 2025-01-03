@@ -24,12 +24,12 @@ public class MainPanel extends JPanel {
             int randomTreasure = randomize.nextInt(4);
             final int index = i;
 
-            if (randomPlace <= 5) {
+            if (randomPlace <= 10) {
                 int[] placeEm = treasureShape(randomTreasure, sizeOfBoard, i);
                 if (frames[i] == null && placeEm.length > 0 && isValidPlacement(placeEm)) {
                     for (int k : placeEm) {
                         if (k != -1 && k < frames.length) {
-                            frames[k] = new TreasureFrame(mainFrame, new Color(200 - (i * 10) / sizeOfBoard, 130, 130), treasureNbr);
+                            frames[k] = new TreasureFrame(mainFrame, new Color(120, 130, 130), treasureNbr);
                             //frames[k].setText(String.valueOf(treasureNbr + "-" + randomTreasure));
                         }
                     }
@@ -38,7 +38,7 @@ public class MainPanel extends JPanel {
             }
 
             if (frames[i] == null) {
-                frames[i] = new Frame(mainFrame, new Color(200 - (i * 10) / sizeOfBoard, 130, 130));
+                frames[i] = new Frame(mainFrame, new Color(120, 130, 130));
             }
 
             if (frames[i] != null) {
@@ -83,13 +83,12 @@ public class MainPanel extends JPanel {
             positions[3] = startPosition + sizeOfBoard + 1;
             positions[4] = startPosition + 2 * sizeOfBoard;
 
-            if (
-                    positions[1] >= sizeOfBoard * sizeOfBoard || positions[1] < 0 ||
-                            positions[2] >= sizeOfBoard * sizeOfBoard || positions[2] < 0 ||
-                            positions[3] >= sizeOfBoard * sizeOfBoard || positions[3] < 0 ||
-                            positions[4] >= sizeOfBoard * sizeOfBoard || positions[4] < 0 ||
-                            (startPosition % sizeOfBoard == 0 && positions[1] % sizeOfBoard != sizeOfBoard - 1) ||
-                            (startPosition % sizeOfBoard == sizeOfBoard - 1 && positions[3] % sizeOfBoard != 0)
+            if (positions[1] >= sizeOfBoard * sizeOfBoard || positions[1] < 0 ||
+                    positions[2] >= sizeOfBoard * sizeOfBoard || positions[2] < 0 ||
+                    positions[3] >= sizeOfBoard * sizeOfBoard || positions[3] < 0 ||
+                    positions[4] >= sizeOfBoard * sizeOfBoard || positions[4] < 0 ||
+                    (startPosition % sizeOfBoard == 0 && positions[1] % sizeOfBoard != sizeOfBoard - 1) ||
+                    (startPosition % sizeOfBoard == sizeOfBoard - 1 && positions[3] % sizeOfBoard != 0)
             ) {
                 return new int[]{-1, -1, -1, -1, -1};
             }
@@ -114,13 +113,24 @@ public class MainPanel extends JPanel {
         return isValid ? positions : new int[0];
     }
 
-    public boolean checkIfRevealed(int treasureNbr){
-        int count=0;
-        for(int i = 0 ; i<frames.length; i++){
-            if(treasureNbr==frames[i].getPartOfTreasure())
-                count++;
+    public void checkIfRevealed(int treasureNbr) {
+        boolean allClicked = true;
+        for (int i = 0; i < frames.length; i++) {
+            if (treasureNbr == frames[i].getPartOfTreasure()) {
+                if (!frames[i].isClicked()) {
+                    allClicked = false;
+                }
+            }
         }
-    return true;}
+        if (allClicked) {
+            for (int i = 0; i < frames.length; i++) {
+                if (treasureNbr == frames[i].getPartOfTreasure()) {
+                    frames[i].fullReveal();
+                }
+            }
+        }
+
+    }
 
     public boolean isValidPlacement(int[] positions) {
         for (int pos : positions) {
@@ -134,14 +144,17 @@ public class MainPanel extends JPanel {
     public void revealFrame(int index) {
         System.out.println("Points gained:" + frames[index].getValue());
         frames[index].reveal();
+
     }
 
     public void updateBoard() {
         for (int i = 0; i < frames.length; i++) {
             if (frames[i].isClicked()) {
                 frames[i].reveal();
+                checkIfRevealed(frames[i].getPartOfTreasure());
             }
         }
+
     }
 
     public Frame getFrame(int index) {

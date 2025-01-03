@@ -1,10 +1,11 @@
 package View;
 
+import javax.swing.border.LineBorder;
 import java.awt.*;
 
 public class TreasureFrame extends Frame{
     private int value= 10;
-    private Color background= Color.orange;
+    private Color background= new Color(230, 218, 110);
     private int partOfTreasure;
 
 
@@ -27,9 +28,14 @@ public class TreasureFrame extends Frame{
     @Override
     public void reveal() {
         this.setBackground(background);
-        this.setText(String.valueOf(value)+"p");
-
+        //this.setText("X");
         setClicked(true);
+    }
+
+    public void fullReveal(){
+        this.setBorder(new LineBorder(Color.DARK_GRAY,3,true));
+        setClicked(true);
+
     }
 
     @Override
