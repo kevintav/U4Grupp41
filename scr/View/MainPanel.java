@@ -21,7 +21,7 @@ public class MainPanel extends JPanel {
         for (int i = 0; i < sizeOfBoard * sizeOfBoard; i++) {
             Random randomize = new Random();
             int randomPlace = randomize.nextInt(100);
-            int randomTreasure = randomize.nextInt(4);
+            int randomTreasure = randomize.nextInt(5);
             final int index = i;
 
             if (randomPlace <= 10) {
@@ -70,53 +70,76 @@ public class MainPanel extends JPanel {
         int[] positions = new int[5];
         boolean isValid = true;
 
-        //TODO lägg till fler treasureShapes.
-        if (type == 0) {
-            positions[0] = startPosition;
-            positions[1] = startPosition + 1;
-            positions[2] = startPosition + sizeOfBoard;
-            positions[3] = startPosition + sizeOfBoard + 1;
-            positions[4] = -1;
 
-            if (startPosition % sizeOfBoard == sizeOfBoard - 1 || positions[3] >= sizeOfBoard * sizeOfBoard) {
+        switch (type) {
+            case 0: // SQUARE
+                positions[0] = startPosition;
+                positions[1] = startPosition + 1;
+                positions[2] = startPosition + sizeOfBoard;
+                positions[3] = startPosition + sizeOfBoard + 1;
+                positions[4] = -1;
+
+                if (startPosition % sizeOfBoard == sizeOfBoard - 1 || positions[3] >= sizeOfBoard * sizeOfBoard) {
+                    isValid = false;
+                }
+                break;
+
+            case 1: // STAR
+                positions[0] = startPosition;
+                positions[1] = startPosition + sizeOfBoard - 1;
+                positions[2] = startPosition + sizeOfBoard;
+                positions[3] = startPosition + sizeOfBoard + 1;
+                positions[4] = startPosition + 2 * sizeOfBoard;
+
+                if (positions[1] >= sizeOfBoard * sizeOfBoard || positions[1] < 0 ||
+                        positions[2] >= sizeOfBoard * sizeOfBoard || positions[2] < 0 ||
+                        positions[3] >= sizeOfBoard * sizeOfBoard || positions[3] < 0 ||
+                        positions[4] >= sizeOfBoard * sizeOfBoard || positions[4] < 0) {
+                    isValid = false;
+                }
+
+                if ((startPosition % sizeOfBoard == 0 || startPosition % sizeOfBoard == sizeOfBoard - 1) ||
+                        (startPosition + sizeOfBoard - 1) % sizeOfBoard == sizeOfBoard - 1 ||
+                        (startPosition + sizeOfBoard) / sizeOfBoard == sizeOfBoard - 1) {
+                    isValid = false;
+                }
+                break;
+
+            case 2: // 2LINE
+                positions[0] = startPosition;
+                positions[1] = startPosition + 1;
+                positions[2] = -1;
+                positions[3] = -1;
+                positions[4] = -1;
+
+                if (startPosition % sizeOfBoard == sizeOfBoard - 1) {
+                    isValid = false;
+                }
+                break;
+
+            case 3: // SMALL SQUARE
+                positions[0] = startPosition;
+                positions[1] = -1;
+                positions[2] = -1;
+                positions[3] = -1;
+                positions[4] = -1;
+                break;
+
+            case 4: //3LINE
+                positions[0] = startPosition;
+                positions[1] = startPosition + 1;
+                positions[2] = startPosition + 2;
+                positions[3] = -1;
+                positions[4] = -1;
+
+                if (startPosition % sizeOfBoard == sizeOfBoard - 2) {
+                    isValid = false;
+                }
+                break;
+
+            default:
                 isValid = false;
-            }
-        } else if (type == 1) { // STAR(suger)
-            positions[0] = startPosition;
-            positions[1] = startPosition + sizeOfBoard - 1;
-            positions[2] = startPosition + sizeOfBoard;
-            positions[3] = startPosition + sizeOfBoard + 1;
-            positions[4] = startPosition + 2 * sizeOfBoard;
-
-            if (positions[1] >= sizeOfBoard * sizeOfBoard || positions[1] < 0 ||
-                    positions[2] >= sizeOfBoard * sizeOfBoard || positions[2] < 0 ||
-                    positions[3] >= sizeOfBoard * sizeOfBoard || positions[3] < 0 ||
-                    positions[4] >= sizeOfBoard * sizeOfBoard || positions[4] < 0) {
-                isValid = false;
-            }
-
-            if ((startPosition % sizeOfBoard == 0 || startPosition % sizeOfBoard == sizeOfBoard - 1) ||
-                    (startPosition + sizeOfBoard - 1) % sizeOfBoard == sizeOfBoard - 1 ||
-                    (startPosition + sizeOfBoard) / sizeOfBoard == sizeOfBoard - 1) {
-                isValid = false;
-            }
-
-        } else if (type == 2) {
-            positions[0] = startPosition;
-            positions[1] = startPosition + 1;
-            positions[2] = -1;
-            positions[3] = -1;
-            positions[4] = -1;
-
-            if (startPosition % sizeOfBoard == sizeOfBoard - 1) {
-                isValid = false;
-            }
-        } else if (type == 3) {
-            positions[0] = startPosition;
-            positions[1] = -1;
-            positions[2] = -1;
-            positions[3] = -1;
-            positions[4] = -1;
+                break;
         }
 
         return isValid ? positions : new int[0];
