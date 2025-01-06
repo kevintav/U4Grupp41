@@ -60,7 +60,6 @@ public class TreasureFrame extends Frame {
             return String.valueOf(value);
         }
     }
-
     public void setNumberOfPieces(int nbr){
         numberOfPieces=nbr;
     }

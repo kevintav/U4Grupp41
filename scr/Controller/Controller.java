@@ -44,18 +44,17 @@ public class Controller {
         }
     }
 
-
+    // Startknappen i ScoreBoard, ska ändras till något annat sen
     public void handleStartButtonClick() {
         scoreBoard.setGameMessage("Spelet har startat! Lycka till!");
     }
 
     // Resetknappen i ScoreBoard
     public void handleResetButtonClick() {
-        removeActionListeners();
-        scoreBoard.resetScore();
-        view.resetBoard();
-        mainPanel = view.getMainPanel();
-        setActionListeners();
+        scoreBoard.resetScore(); // Nollställ poängen
+        view.resetBoard();       // Skapa ny spelplan
+        mainPanel = view.getMainPanel(); // Hämta den nya spelplanen
+        setActionListeners();    // Koppla ActionListeners till den nya spelplanen
         scoreBoard.setGameMessage("Poängen har nollställts. Börja om!");
     }
     public void removeActionListeners() {
