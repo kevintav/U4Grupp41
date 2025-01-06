@@ -53,11 +53,24 @@ public class ScoreBoard extends JPanel {
         scoreLabel.setText("Score: " + score);
     }
 
+    public void resetScore(){
+        score=0;
+        scoreLabel.setText("Score: "+ score);
+    }
+
     public String getScore(){
         return String.valueOf(score);
     }
 
     public void setGameMessage(String text){
         gameMessage.setText(text);
+    }
+
+    public JButton getStartButton() {
+        return startButton;
+    }
+
+    public JButton getResetButton() {
+        return resetButton;
     }
 }
