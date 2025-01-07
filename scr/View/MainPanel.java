@@ -52,7 +52,7 @@ public class MainPanel extends JPanel {
             if (isValidPlacement(randomIndex, randomTreasure)) {
                 for (int k : shapeIndexes) {
                     if (k != -1 && k < frames.length) { // Placera endast på giltiga positioner
-                        frames[k] = new TreasureFrame(mainFrame, new Color(180, 160, 130), treasureCount);
+                        frames[k] = new TreasureFrame(mainFrame, new Color(120, 160, 130), treasureCount);
                     }
                 }
                 treasureCount++; // Öka räknaren endast om placeringen är giltig
@@ -64,7 +64,7 @@ public class MainPanel extends JPanel {
         for (int i = 0; i < sizeOfBoard * sizeOfBoard; i++) {
             int randomPlace = randomize.nextInt(100);
             if (randomPlace >= 85 && frames[i] == null) {
-                frames[i] = new TrapFrame(mainFrame, new Color(020, 160, 130));
+                frames[i] = new TrapFrame(mainFrame, new Color(120, 160, 130));
             }
         }
 
@@ -106,7 +106,7 @@ public class MainPanel extends JPanel {
         }
         for (Frame frame : frames) {
             if (frame instanceof TreasureFrame && frame.getPartOfTreasure() == treasureNbr) {
-                ((TreasureFrame) frame).fullReveal();
+                frame.fullReveal();
             }
         }
         addPoints(treasureNbr);
@@ -119,8 +119,8 @@ public class MainPanel extends JPanel {
                 pointsToAdd += Integer.parseInt(frame.getValue());
             }
         }
-        score += pointsToAdd;
-        System.out.println("Score: " + score);
+
+        System.out.println("hela formen hittad, poäng: " + pointsToAdd);
     }
 
     public Frame getFrame(int index) {
@@ -156,11 +156,11 @@ public class MainPanel extends JPanel {
                 positions[3] = startPosition - sizeOfBoard;         // Ovanför
                 positions[4] = startPosition + sizeOfBoard;         // Nedanför
 
-// Kontrollera om någon av positionerna är utanför brädet eller om de är upptagna
+
                 if (positions[1] < 0 || positions[2] < 0 || positions[3] < 0 || positions[4] < 0 ||
                         positions[1] >= sizeOfBoard * sizeOfBoard || positions[2] >= sizeOfBoard * sizeOfBoard ||
                         positions[3] >= sizeOfBoard * sizeOfBoard || positions[4] >= sizeOfBoard * sizeOfBoard) {
-                    isValid = false;  // Om någon position är utanför brädet, gör det ogiltigt
+                    isValid = false;
                 }
                 break;
 
@@ -180,12 +180,14 @@ public class MainPanel extends JPanel {
             case 3: // 3LINE
                 positions[0] = startPosition;
                 positions[1] = startPosition + 1;
-                positions[2] = startPosition + 2;
+                positions[2] = startPosition - 1;
                 positions[3] = -1;
                 positions[4] = -1;
 
                 if (startPosition % sizeOfBoard == sizeOfBoard - 1 ||
-                        positions[1] >= sizeOfBoard * sizeOfBoard || positions[2] >= sizeOfBoard * sizeOfBoard) {
+                        startPosition % sizeOfBoard == 0 || //
+                        positions[1] >= sizeOfBoard * sizeOfBoard ||
+                        positions[2] < 0 || positions[2] >= sizeOfBoard * sizeOfBoard) {
                     isValid = false;
                 } else if ((startPosition + 2) / sizeOfBoard == (sizeOfBoard - 2) && (startPosition % sizeOfBoard < sizeOfBoard - 2)) {
                     isValid = true;
@@ -199,13 +201,13 @@ public class MainPanel extends JPanel {
                 positions[3] = startPosition + sizeOfBoard + 1;
                 positions[4] = -1;
 
-                // Kontrollera om startPosition är på sista kolumnen eller på sista raden
-                if (startPosition % sizeOfBoard == sizeOfBoard - 1 || // Om startPosition är på sista kolumnen
-                        positions[3] >= sizeOfBoard * sizeOfBoard ||    // Om den sista positionen är utanför brädet
-                        positions[2] >= sizeOfBoard * sizeOfBoard ||    // Om den andra positionen är utanför brädet
-                        startPosition / sizeOfBoard == sizeOfBoard - 1 || // Om startPosition är på sista raden
-                        (startPosition + 1) / sizeOfBoard == sizeOfBoard - 1) { // Om nästa position är på sista raden
-                    isValid = false;  // Ogiltig om någon position går utanför brädet
+
+                if (startPosition % sizeOfBoard == sizeOfBoard - 1 ||
+                        positions[3] >= sizeOfBoard * sizeOfBoard ||
+                        positions[2] >= sizeOfBoard * sizeOfBoard ||
+                        startPosition / sizeOfBoard == sizeOfBoard - 1 ||
+                        (startPosition + 1) / sizeOfBoard == sizeOfBoard - 1) {
+                    isValid = false;
                 }
                 break;
             default:
@@ -225,10 +227,6 @@ public class MainPanel extends JPanel {
             return false;
         }
 
-        // Kontrollera att startIndex inte är utanför gränserna
-        if (startIndex < 0 || startIndex >= frames.length) {
-            return false;
-        }
 
         switch (shape) {
             case 0: // Enkel treasure
@@ -258,8 +256,11 @@ public class MainPanel extends JPanel {
                 break;
 
             case 3: // 3line
-                if (startIndex % sizeOfBoard == sizeOfBoard - 1 ||
-                        frames[startIndex] != null || frames[startIndex + 1] != null || frames[startIndex + 2] != null) {
+                if (startIndex % sizeOfBoard == sizeOfBoard - 1 || // Sista kolumnen (kan inte gå åt höger)
+                        startIndex + 2 >= sizeOfBoard * sizeOfBoard || // Index + 2 går utanför brädet
+                        frames[startIndex] != null || // Kontrollera om startIndex är upptagen
+                        frames[startIndex + 1] != null || // Kontrollera om startIndex + 1 är upptagen
+                        frames[startIndex + 2] != null) { // Kontrollera om startIndex + 2 är upptagen
                     return false;
                 }
                 break;
