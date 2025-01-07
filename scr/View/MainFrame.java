@@ -35,9 +35,9 @@ public class MainFrame extends JFrame {
     }
 
     public void resetBoard() {
-        this.remove(mainPanel); // Ta bort den gamla spelplanen
+        this.remove(mainPanel);
         mainPanel = new MainPanel(mainPanel.getWidth(), mainPanel.getHeight(), this, mainPanel.getSizeOfBoard());
-        this.add(mainPanel, BorderLayout.CENTER); // Lägg till den nya spelplanen
+        this.add(mainPanel, BorderLayout.CENTER);
         repaint();
         revalidate();
     }

@@ -61,10 +61,12 @@ public class MainPanel extends JPanel {
 
 
         // Skapa fällor
+        int traps=0;
         for (int i = 0; i < sizeOfBoard * sizeOfBoard; i++) {
             int randomPlace = randomize.nextInt(100);
-            if (randomPlace >= 85 && frames[i] == null) {
+            if (randomPlace >= 85 && frames[i] == null && traps<5) {
                 frames[i] = new TrapFrame(mainFrame, new Color(120, 160, 130));
+                traps++;
             }
         }
 
