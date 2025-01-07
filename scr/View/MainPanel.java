@@ -94,6 +94,12 @@ public class MainPanel extends JPanel {
         }
     }
 
+    public void revealAllFrames(){
+        for(int i = 0; i<frames.length; i++){
+            frames[i].reveal();
+        }
+    }
+
     private void checkAndRevealTreasure(int treasureNbr) {
         for (Frame frame : frames) {
             if (frame instanceof TreasureFrame && frame.getPartOfTreasure() == treasureNbr) {

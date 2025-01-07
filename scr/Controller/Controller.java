@@ -126,22 +126,10 @@ public class Controller {
 
     private void endGame() {
         scoreBoard.setGameDirector("Spelet är över!");
-        JFrame test = new JFrame();
-        JLabel hiscore = new JLabel("STEFAN",SwingConstants.CENTER);
-        test.setSize(400,500);
-        test.setLocationRelativeTo(null);
-        test.setResizable(false);
-        test.setVisible(true);
-        test.setBackground(Color.WHITE);
-        hiscore.setBackground(Color.black);
-        hiscore.setText("stefan 1.");
-        hiscore.setFont(new Font("Arial", Font.BOLD,29));
-        hiscore.setForeground(Color.white);
-        test.setLayout(new BorderLayout(1, 1));
-        hiscore.setOpaque(true);
-        test.add(hiscore);
-        JFrame f = new JFrame();
+        mainPanel.revealAllFrames();
+        HiscoreView hiscores = new HiscoreView();
 
+        JFrame f = new JFrame();
         int choice = JOptionPane.showOptionDialog(
                 f,
                 "Spelet är över! Vad vill du göra?",
@@ -159,6 +147,7 @@ public class Controller {
             System.exit(0);
         }
     }
+
     private void resetGame() {
         player1 = new Player();
         player2 = new Player();
