@@ -3,6 +3,7 @@ package View;
 import javax.swing.*;
 import java.awt.*;
 
+import java.util.Arrays;
 import java.util.Random;
 
 public class MainPanel extends JPanel {
@@ -10,8 +11,8 @@ public class MainPanel extends JPanel {
     private Frame[] frames;
     private MainFrame mainFrame;
     private int score = 0;
-    private int treasureCount  = 0; // Räknar antalet placerade skatter
-    private int nextTreasureNbr = 1;  // För att hålla reda på unika treasureNbr
+    private int treasureCount = 0; // Räknar antalet placerade skatter
+    // För att hålla reda på unika treasureNbr
 
     public MainPanel(int width, int height, MainFrame mainFrame, int sizeOfBoard) {
         this.mainFrame = mainFrame;
@@ -28,40 +29,42 @@ public class MainPanel extends JPanel {
         this.setVisible(true);
     }
 
+    /**
+     * Genererar ett spelbräde där den först och främst slumpar fram positioner där skatter ska placeras, sedan tar den
+     * kvarvarande platser och slumpar ut fällor och epicloot. Efter allt detta fylls hela brädet med tommar frames.
+     *
+     * @ Author Christoffer Björnheimer
+     */
     private void generateBoard() {
         Random randomize = new Random();
 
         // Skapa en boolean-array för att hålla reda på valda positioner
         boolean[] selectedPositions = new boolean[sizeOfBoard * sizeOfBoard];
 
-        // Placera ut 20 skatter på slumpade positioner
-        for (int count = 0; count < 20; count++) {
-            int randomIndex;
-            do {
-                randomIndex = randomize.nextInt(sizeOfBoard * sizeOfBoard);  // Slumpa en position
-            } while (selectedPositions[randomIndex]); // Om positionen redan är vald, försök igen
+        while (treasureCount < (sizeOfBoard * sizeOfBoard) / 10) {
+            int randomIndex = randomize.nextInt(sizeOfBoard * sizeOfBoard);
+            int randomTreasure = randomize.nextInt(5);
 
-            selectedPositions[randomIndex] = true;  // Markera denna position som vald
+            // Hämta de beräknade positionerna för den slumpade skatten
+            int[] shapeIndexes = treasureShape(randomTreasure, sizeOfBoard, randomIndex);
 
-            int randomTreasure = randomize.nextInt(5); // Slumpa vilken typ av skatt
-            int[] placeEm = treasureShape(randomTreasure, sizeOfBoard, randomIndex);
-
-            if (frames[randomIndex] == null && placeEm.length > 0 && isValidPlacement(placeEm)) {
-                treasureCount++;
-                for (int k : placeEm) {
-                    if (k != -1 && k < frames.length) {
-                        frames[k] = new TreasureFrame(mainFrame, new Color(220, 160, 130), nextTreasureNbr);
-                        nextTreasureNbr++;
+            // Kontrollera om placeringen är giltig
+            if (isValidPlacement(randomIndex, randomTreasure)) {
+                for (int k : shapeIndexes) {
+                    if (k != -1 && k < frames.length) { // Placera endast på giltiga positioner
+                        frames[k] = new TreasureFrame(mainFrame, new Color(180, 160, 130), treasureCount);
                     }
                 }
+                treasureCount++; // Öka räknaren endast om placeringen är giltig
             }
         }
 
-        // Skapa fällor med högre sannolikhet
+
+        // Skapa fällor
         for (int i = 0; i < sizeOfBoard * sizeOfBoard; i++) {
             int randomPlace = randomize.nextInt(100);
             if (randomPlace >= 85 && frames[i] == null) {
-                frames[i] = new TrapFrame(mainFrame, new Color(120, 160, 130));
+                frames[i] = new TrapFrame(mainFrame, new Color(020, 160, 130));
             }
         }
 
@@ -74,7 +77,7 @@ public class MainPanel extends JPanel {
             }
         }
 
-        // Skapa tomma rutor om ingen skatt har lagts
+        // Skapa tomma rutor
         for (int i = 0; i < sizeOfBoard * sizeOfBoard; i++) {
             if (frames[i] == null) {
                 frames[i] = new Frame(mainFrame, new Color(120, 160, 130));
@@ -82,7 +85,6 @@ public class MainPanel extends JPanel {
             add(frames[i]);
         }
     }
-
 
 
     public void revealFrame(Frame click) {
@@ -95,38 +97,28 @@ public class MainPanel extends JPanel {
     }
 
     private void checkAndRevealTreasure(int treasureNbr) {
-        boolean allRevealed = true;
-
         for (Frame frame : frames) {
             if (frame instanceof TreasureFrame && frame.getPartOfTreasure() == treasureNbr) {
                 if (!frame.isClicked()) {
-                    allRevealed = false;
-                    break;
+                    return;
                 }
             }
         }
-
-        if (allRevealed) {
-            for (Frame frame : frames) {
-                if (frame instanceof TreasureFrame && frame.getPartOfTreasure() == treasureNbr) {
-                    ((TreasureFrame) frame).fullReveal();
-                }
+        for (Frame frame : frames) {
+            if (frame instanceof TreasureFrame && frame.getPartOfTreasure() == treasureNbr) {
+                ((TreasureFrame) frame).fullReveal();
             }
-
-            // Tilldela poäng för skatten
-            addPoints(treasureNbr);
         }
+        addPoints(treasureNbr);
     }
 
     private void addPoints(int treasureNbr) {
         int pointsToAdd = 0;
-
         for (Frame frame : frames) {
             if (frame instanceof TreasureFrame && frame.getPartOfTreasure() == treasureNbr) {
                 pointsToAdd += Integer.parseInt(frame.getValue());
             }
         }
-
         score += pointsToAdd;
         System.out.println("Score: " + score);
     }
@@ -148,36 +140,27 @@ public class MainPanel extends JPanel {
         boolean isValid = true;
 
         switch (type) {
-            case 4: // SQUARE
-                positions[0] = startPosition;
-                positions[1] = startPosition + 1;
-                positions[2] = startPosition + sizeOfBoard;
-                positions[3] = startPosition + sizeOfBoard + 1;
 
-                // Kontrollera om någon position går utanför brädet eller bryter rad
-                if (startPosition % sizeOfBoard == sizeOfBoard - 1 || // Om startPosition är på sista kolumnen
-                        positions[1] % sizeOfBoard == 0 ||               // Om position 1 är på början av rad
-                        positions[3] >= sizeOfBoard * sizeOfBoard ||      // Om position 3 är utanför brädet
-                        positions[2] >= sizeOfBoard * sizeOfBoard) {      // Om position 2 är utanför brädet
-                    isValid = false;
-                }
+            case 0: // SMALL SQUARE
+                positions[0] = startPosition;
+                positions[1] = -1;
+                positions[2] = -1;
+                positions[3] = -1;
+                positions[4] = -1;
                 break;
 
             case 1: // STAR
-                positions[0] = startPosition;
-                positions[1] = startPosition + sizeOfBoard - 1;
-                positions[2] = startPosition + sizeOfBoard;
-                positions[3] = startPosition + sizeOfBoard + 1;
-                positions[4] = startPosition + 2 * sizeOfBoard;
+                positions[0] = startPosition;                       // Mittpunkten (centralt)
+                positions[1] = startPosition - 1;                   // Vänster
+                positions[2] = startPosition + 1;                   // Höger
+                positions[3] = startPosition - sizeOfBoard;         // Ovanför
+                positions[4] = startPosition + sizeOfBoard;         // Nedanför
 
-                // Kontrollera att ingen position är utanför brädet
-                if (positions[1] >= sizeOfBoard * sizeOfBoard || positions[2] >= sizeOfBoard * sizeOfBoard || positions[3] >= sizeOfBoard * sizeOfBoard || positions[4] >= sizeOfBoard * sizeOfBoard) {
-                    isValid = false;
-                }
-
-                // Kontrollera att ingen position är på kanten
-                if (startPosition % sizeOfBoard == 0 || startPosition % sizeOfBoard == sizeOfBoard - 1 || (startPosition + sizeOfBoard - 1) % sizeOfBoard == sizeOfBoard - 1 || (startPosition + sizeOfBoard) / sizeOfBoard == sizeOfBoard - 1) {
-                    isValid = false;
+// Kontrollera om någon av positionerna är utanför brädet eller om de är upptagna
+                if (positions[1] < 0 || positions[2] < 0 || positions[3] < 0 || positions[4] < 0 ||
+                        positions[1] >= sizeOfBoard * sizeOfBoard || positions[2] >= sizeOfBoard * sizeOfBoard ||
+                        positions[3] >= sizeOfBoard * sizeOfBoard || positions[4] >= sizeOfBoard * sizeOfBoard) {
+                    isValid = false;  // Om någon position är utanför brädet, gör det ogiltigt
                 }
                 break;
 
@@ -188,18 +171,10 @@ public class MainPanel extends JPanel {
                 positions[3] = -1;
                 positions[4] = -1;
 
-                // Kontrollera att position 1 inte ligger på brädets kant
+
                 if (startPosition % sizeOfBoard == sizeOfBoard - 1 || positions[1] >= sizeOfBoard * sizeOfBoard) {
                     isValid = false;
                 }
-                break;
-
-            case 0: // SMALL SQUARE
-                positions[0] = startPosition;
-                positions[1] = -1;
-                positions[2] = -1;
-                positions[3] = -1;
-                positions[4] = -1;
                 break;
 
             case 3: // 3LINE
@@ -209,29 +184,101 @@ public class MainPanel extends JPanel {
                 positions[3] = -1;
                 positions[4] = -1;
 
-                // Kontrollera att alla tre positionerna är giltiga och inte ligger på kanten
-                if (startPosition % sizeOfBoard == sizeOfBoard - 1 || // Om startPosition är på sista kolumnen
+                if (startPosition % sizeOfBoard == sizeOfBoard - 1 ||
                         positions[1] >= sizeOfBoard * sizeOfBoard || positions[2] >= sizeOfBoard * sizeOfBoard) {
                     isValid = false;
+                } else if ((startPosition + 2) / sizeOfBoard == (sizeOfBoard - 2) && (startPosition % sizeOfBoard < sizeOfBoard - 2)) {
+                    isValid = true;
                 }
                 break;
 
+            case 4: // SQUARE
+                positions[0] = startPosition;
+                positions[1] = startPosition + 1;
+                positions[2] = startPosition + sizeOfBoard;
+                positions[3] = startPosition + sizeOfBoard + 1;
+                positions[4] = -1;
+
+                // Kontrollera om startPosition är på sista kolumnen eller på sista raden
+                if (startPosition % sizeOfBoard == sizeOfBoard - 1 || // Om startPosition är på sista kolumnen
+                        positions[3] >= sizeOfBoard * sizeOfBoard ||    // Om den sista positionen är utanför brädet
+                        positions[2] >= sizeOfBoard * sizeOfBoard ||    // Om den andra positionen är utanför brädet
+                        startPosition / sizeOfBoard == sizeOfBoard - 1 || // Om startPosition är på sista raden
+                        (startPosition + 1) / sizeOfBoard == sizeOfBoard - 1) { // Om nästa position är på sista raden
+                    isValid = false;  // Ogiltig om någon position går utanför brädet
+                }
+                break;
             default:
                 isValid = false;
                 break;
         }
-
-        // Returnera de giltiga positionerna eller en tom array
-        return isValid ? positions : new int[0];
+        //Returnerar array med ogiltiga värden om den inte kan skapas
+        if (!isValid) {
+            Arrays.fill(positions, -1);
+        }
+        return positions;
     }
 
 
-    public boolean isValidPlacement(int[] positions) {
-        for (int pos : positions) {
-            if (pos < 0 || pos >= frames.length || frames[pos] != null) {
-                return false;
-            }
+    public boolean isValidPlacement(int startIndex, int shape) {
+        if (shape == -1) {
+            return false;
         }
+
+        // Kontrollera att startIndex inte är utanför gränserna
+        if (startIndex < 0 || startIndex >= frames.length) {
+            return false;
+        }
+
+        switch (shape) {
+            case 0: // Enkel treasure
+                if (frames[startIndex] != null) {
+                    return false;
+                }
+                break;
+
+            case 1: // Star
+                // Kontrollera att ingen position för Star är utanför gränserna
+                if (startIndex % sizeOfBoard == 0 || startIndex % sizeOfBoard == sizeOfBoard - 1 ||
+                        startIndex - sizeOfBoard < 0 || startIndex + sizeOfBoard >= frames.length ||
+                        frames[startIndex] != null ||
+                        frames[startIndex - 1] != null ||
+                        frames[startIndex + 1] != null ||
+                        frames[startIndex + sizeOfBoard] != null ||
+                        frames[startIndex - sizeOfBoard] != null) {
+                    return false;
+                }
+                break;
+
+            case 2: // 2line
+                if (startIndex % sizeOfBoard == sizeOfBoard - 1 ||
+                        frames[startIndex] != null || frames[startIndex + 1] != null) {
+                    return false;
+                }
+                break;
+
+            case 3: // 3line
+                if (startIndex % sizeOfBoard == sizeOfBoard - 1 ||
+                        frames[startIndex] != null || frames[startIndex + 1] != null || frames[startIndex + 2] != null) {
+                    return false;
+                }
+                break;
+
+            case 4: // Square
+                if (startIndex % sizeOfBoard == sizeOfBoard - 1 ||
+                        startIndex + 1 >= frames.length ||
+                        startIndex + sizeOfBoard >= frames.length ||
+                        startIndex + sizeOfBoard + 1 >= frames.length ||
+                        frames[startIndex] != null ||
+                        frames[startIndex + 1] != null ||
+                        frames[startIndex + sizeOfBoard] != null ||
+                        frames[startIndex + sizeOfBoard + 1] != null) {
+                    return false;
+                }
+                break;
+        }
+
         return true;
     }
+
 }
