@@ -61,7 +61,7 @@ public class MainPanel extends JPanel {
         for (int i = 0; i < sizeOfBoard * sizeOfBoard; i++) {
             int randomPlace = randomize.nextInt(100);
             if (randomPlace >= 85 && frames[i] == null && traps<5) {
-                frames[i] = new TrapFrame(mainFrame, new Color(120, 160, 130));
+                frames[i] = new TrapFrame(mainFrame, new Color(220, 160, 130));
                 traps++;
             }
         }

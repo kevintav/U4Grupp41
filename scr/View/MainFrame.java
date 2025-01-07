@@ -23,6 +23,7 @@ public class MainFrame extends JFrame {
         this.setSize(frameWidth, frameHeight);
         this.setResizable(false);
         this.setLayout(new BorderLayout(1, 1));
+        this.setLocationRelativeTo(null);
 
         scoreBoard = new ScoreBoard(frameWidth, scoreboardHeight);
         this.add(scoreBoard, BorderLayout.NORTH);
