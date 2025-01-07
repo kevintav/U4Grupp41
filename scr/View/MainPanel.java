@@ -109,19 +109,9 @@ public class MainPanel extends JPanel {
                 frame.fullReveal();
             }
         }
-        addPoints(treasureNbr);
+
     }
 
-    private void addPoints(int treasureNbr) {
-        int pointsToAdd = 0;
-        for (Frame frame : frames) {
-            if (frame instanceof TreasureFrame && frame.getPartOfTreasure() == treasureNbr) {
-                pointsToAdd += Integer.parseInt(frame.getValue());
-            }
-        }
-
-        System.out.println("hela formen hittad, poäng: " + pointsToAdd);
-    }
 
     public Frame getFrame(int index) {
         return frames[index];
@@ -155,7 +145,6 @@ public class MainPanel extends JPanel {
                 positions[2] = startPosition + 1;                   // Höger
                 positions[3] = startPosition - sizeOfBoard;         // Ovanför
                 positions[4] = startPosition + sizeOfBoard;         // Nedanför
-
 
                 if (positions[1] < 0 || positions[2] < 0 || positions[3] < 0 || positions[4] < 0 ||
                         positions[1] >= sizeOfBoard * sizeOfBoard || positions[2] >= sizeOfBoard * sizeOfBoard ||
@@ -278,7 +267,6 @@ public class MainPanel extends JPanel {
                 }
                 break;
         }
-
         return true;
     }
 

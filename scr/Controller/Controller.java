@@ -1,9 +1,7 @@
 package Controller;
 
-import View.Frame;
-import View.MainFrame;
-import View.MainPanel;
-import View.ScoreBoard;
+import View.*;
+
 import java.awt.event.ActionListener;
 
 public class Controller {
@@ -20,6 +18,56 @@ public class Controller {
         setActionListeners();
     }
 
+    private void addPoints(int index) {
+        int pointsToAdd = 0;
+        Frame clickedFrame = mainPanel.getFrame(index); // Få den klickade rutan
+        int frameValue = Integer.parseInt(clickedFrame.getValue()); // Få värdet för den klickade rutan
+        int treasureNbr = clickedFrame.getPartOfTreasure(); // Få treasureNbr för skatten
+
+        // Kontrollera om det är en TreasureFrame och om den är avslöjad
+        if (treasureNbr != -1 && clickedFrame instanceof TreasureFrame) {
+            boolean allRevealed = true;
+
+            // Kontrollera om alla delar av skatten är avslöjade
+            for (Frame frame : mainPanel.getBoard()) {
+                if (frame instanceof TreasureFrame && frame.getPartOfTreasure() == treasureNbr) {
+                    if (!frame.isClicked()) { // Om en del av skatten inte är avslöjad
+                        allRevealed = false;
+                        break;
+                    }
+                }
+            }
+
+            // Om alla delar är avslöjade, addera poäng
+            if (allRevealed) {
+                // Lägg till poäng för hela skatten
+                for (Frame frame : mainPanel.getBoard()) {
+                    if (frame instanceof TreasureFrame && frame.getPartOfTreasure() == treasureNbr) {
+                        pointsToAdd += Integer.parseInt(frame.getValue()); // Lägg till poäng från alla delar
+                    }
+                }
+                scoreBoard.setGameMessage("Du hittade hela skatten och får " + pointsToAdd + " poäng.");
+                if (pointsToAdd == 100) {
+                    scoreBoard.setGameMessage("Du hittade en hemlig skatt! Grattis till: " + pointsToAdd + " poäng!");
+                }
+            }
+        } else {
+            // Om det inte är en treasure eller den inte är avslöjad, ge feedback
+            if (frameValue == 0) {
+                scoreBoard.setGameMessage("Miss");
+            } else if (frameValue == 5) {
+                scoreBoard.setGameMessage("Du träffade en fälla och förlorar en besättningsmedlem");
+            } else if (frameValue == 10) {
+                scoreBoard.setGameMessage("Du hittade hela skatten");
+            }
+        }
+
+        // Uppdatera poängen
+        scoreBoard.updateScore(pointsToAdd);
+        String player1 = "Player 1";
+        scoreBoard.setPlayer1Label(String.format("%s %n %s", player1,pointsToAdd)+"p");
+    }
+
 
     public void setActionListeners() {
         Frame[] frames = mainPanel.getBoard();
@@ -27,7 +75,6 @@ public class Controller {
             final int index = i;
             frames[i].addActionListener(e -> handleTileClick(index)); // Koppla action till varje ruta
         }
-        scoreBoard.getStartButton().addActionListener(e -> handleStartButtonClick());
         scoreBoard.getResetButton().addActionListener(e -> handleResetButtonClick());
     }
 
@@ -37,17 +84,11 @@ public class Controller {
 
         if (!frame.isClicked()) {
             mainPanel.revealFrame(frame);
-            int points = Integer.parseInt(frame.getValue());
-            scoreBoard.updateScore(points);
-                scoreBoard.setGameMessage("Du fick " + points + " Poäng");
-
         }
+        addPoints(index);
+
     }
 
-    // Startknappen i ScoreBoard, ska ändras till något annat sen
-    public void handleStartButtonClick() {
-        scoreBoard.setGameMessage("Spelet har startat! Lycka till!");
-    }
 
     // Resetknappen i ScoreBoard
     public void handleResetButtonClick() {

@@ -7,7 +7,6 @@ public class TreasureFrame extends Frame {
     private Color background = new Color(230, 218, 110);
     private int partOfTreasure;
     private boolean isEpic = false;
-    private int numberOfPieces;
     private boolean allRevealed=false;
 
     public TreasureFrame(MainFrame mainFrame, Color color, int partOfTreasure) {
@@ -37,8 +36,9 @@ public class TreasureFrame extends Frame {
     public void fullReveal() {
         allRevealed=true;
         if (!isEpic){
+            setValue(10);
             this.setText("S");
-            this.setBackground(Color.ORANGE);
+            this.setBackground(new Color (230,130,80));
             setClicked(true);
         }
     }
@@ -50,18 +50,18 @@ public class TreasureFrame extends Frame {
 
     @Override
     public String getValue() {
+
         if (isEpic) {
             setValue(100);
             System.out.println("You found a big hidden treasure");
             return String.valueOf(value);
-
         }
-        else{
+
+        if (allRevealed) {
             return String.valueOf(value);
         }
-    }
-    public void setNumberOfPieces(int nbr){
-        numberOfPieces=nbr;
+
+        return "0";
     }
 
 }

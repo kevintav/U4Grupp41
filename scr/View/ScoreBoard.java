@@ -7,19 +7,19 @@ public class ScoreBoard extends JPanel {
     private JLabel scoreLabel;
     private int score = 0;
     private JButton resetButton;
-    private JButton startButton;
+    private JLabel topLeftPanel;
     private JLabel gameMessage;
 
     public ScoreBoard(int width, int height) {
         this.setPreferredSize(new Dimension(width, height));
         this.setBackground(new Color(250, 250, 250));
 
-        startButton = new JButton("Cool Game");
-        startButton.setFont(new Font("Arial", Font.BOLD, 15));
-        startButton.setForeground(Color.WHITE);
-        startButton.setBackground(new Color(100, 150, 150));
-        startButton.setPreferredSize(new Dimension(width/4, 50));
-
+        topLeftPanel = new JLabel("test",SwingConstants.CENTER);
+        topLeftPanel.setFont(new Font("Arial", Font.BOLD, 15));
+        topLeftPanel.setForeground(Color.WHITE);
+        topLeftPanel.setBackground(new Color(100, 150, 150));
+        topLeftPanel.setPreferredSize(new Dimension(width/4, 50));
+        topLeftPanel.setOpaque(true);
 
         scoreLabel = new JLabel("Score: " + score, SwingConstants.CENTER);
         scoreLabel.setFont(new Font("Arial", Font.BOLD, 15));
@@ -43,7 +43,7 @@ public class ScoreBoard extends JPanel {
 
         this.setLayout(new BorderLayout(1,1 ));
         this.add(gameMessage, BorderLayout.SOUTH);
-        this.add(startButton, BorderLayout.WEST);
+        this.add(topLeftPanel, BorderLayout.WEST);
         this.add(resetButton, BorderLayout.EAST);
         this.add(scoreLabel, BorderLayout.CENTER);
     }
@@ -66,8 +66,11 @@ public class ScoreBoard extends JPanel {
         gameMessage.setText(text);
     }
 
-    public JButton getStartButton() {
-        return startButton;
+    public JLabel getTopLeftPanel() {
+        return topLeftPanel;
+    }
+    public void setPlayer1Label(String text){
+        topLeftPanel.setText(text);
     }
 
     public JButton getResetButton() {

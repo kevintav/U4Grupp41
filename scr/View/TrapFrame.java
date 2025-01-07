@@ -4,7 +4,7 @@ import java.awt.*;
 import java.util.Random;
 
 public class TrapFrame extends Frame {
-    private int value = -10;
+    private int value = 5;
     private Color background= Color.RED;
     private String penalty;
 
@@ -35,7 +35,7 @@ public class TrapFrame extends Frame {
     public String getValue(){
         if(!isClicked()) {
             return String.valueOf(value);
-        } return "0";
+        } return String.valueOf(value);
     }
 
     @Override
