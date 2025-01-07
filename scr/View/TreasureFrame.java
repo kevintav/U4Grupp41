@@ -1,17 +1,17 @@
 package View;
 
-import javax.swing.border.LineBorder;
 import java.awt.*;
 
-public class TreasureFrame extends Frame{
-    private int value= 10;
-    private Color background= new Color(230, 218, 110);
+public class TreasureFrame extends Frame {
+    private int value = 10;
+    private Color background = new Color(230, 218, 110);
     private int partOfTreasure;
-
+    private boolean isEpic = false;
+    private boolean allRevealed=false;
 
     public TreasureFrame(MainFrame mainFrame, Color color, int partOfTreasure) {
         super(mainFrame, color);
-        this.partOfTreasure=partOfTreasure;
+        this.partOfTreasure = partOfTreasure;
 
     }
 
@@ -20,10 +20,10 @@ public class TreasureFrame extends Frame{
         return partOfTreasure;
     }
 
-    public void makeEpicLoot(){
-        this.background=Color.magenta;
+    public void makeEpicLoot() {
+        isEpic = true;
+        this.background = Color.magenta;
     }
-
 
 
     @Override
@@ -33,12 +33,14 @@ public class TreasureFrame extends Frame{
         setClicked(true);
     }
 
-    public void fullReveal(){
-        //this.setBorder(new LineBorder(Color.DARK_GRAY,3,true));
-        this.setText("S");
-        this.setBackground(Color.ORANGE);
-        setClicked(true);
-
+    public void fullReveal() {
+        allRevealed=true;
+        if (!isEpic){
+            setValue(10);
+            this.setText("S");
+            this.setBackground(new Color (230,130,80));
+            setClicked(true);
+        }
     }
 
     @Override
@@ -47,15 +49,19 @@ public class TreasureFrame extends Frame{
     }
 
     @Override
-    public String getValue(){
-        if(!isClicked()){
-            if(value==100){
-                System.out.println("You found a big hidden treasure");
-            }
+    public String getValue() {
+
+        if (isEpic) {
+            setValue(100);
+            System.out.println("You found a big hidden treasure");
             return String.valueOf(value);
         }
-        else {
-            return String.valueOf(0);
+
+        if (allRevealed) {
+            return String.valueOf(value);
         }
+
+        return "0";
     }
+
 }
