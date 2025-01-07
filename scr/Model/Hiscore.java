@@ -12,4 +12,8 @@ public class Hiscore {
     public String[] getHiscores() {
         return hiscore;
     }
+
+    public void setHiscore(String[] hiscore) {
+        this.hiscore = hiscore;
+    }
 }

@@ -12,6 +12,7 @@ public class Controller {
     private Player player1;
     private Player player2;
     private Player activePlayer;
+    private Hiscore Hiscore;
 
     public Controller() {
         int sizeOfBoard = 10;
@@ -160,6 +161,6 @@ public class Controller {
     }
 
     public void showHiscore() {
-        // Lägg till kod för att visa högsta poäng
+        Hiscore.getHiscores();
     }
 }
