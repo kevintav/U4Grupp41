@@ -12,7 +12,7 @@ public class Player {
     }
 
     public void killCrewMember() {
-        crewMembers--;
+        this.crewMembers--;
     }
     public void setScore(int score){
         this.score += score;

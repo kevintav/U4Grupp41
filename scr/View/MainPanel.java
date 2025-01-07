@@ -38,9 +38,6 @@ public class MainPanel extends JPanel {
     private void generateBoard() {
         Random randomize = new Random();
 
-        // Skapa en boolean-array för att hålla reda på valda positioner
-        boolean[] selectedPositions = new boolean[sizeOfBoard * sizeOfBoard];
-
         while (treasureCount < (sizeOfBoard * sizeOfBoard) / 10) {
             int randomIndex = randomize.nextInt(sizeOfBoard * sizeOfBoard);
             int randomTreasure = randomize.nextInt(5);
@@ -58,7 +55,6 @@ public class MainPanel extends JPanel {
                 treasureCount++; // Öka räknaren endast om placeringen är giltig
             }
         }
-
 
         // Skapa fällor
         int traps=0;
@@ -111,9 +107,7 @@ public class MainPanel extends JPanel {
                 frame.fullReveal();
             }
         }
-
     }
-
 
     public Frame getFrame(int index) {
         return frames[index];
@@ -127,6 +121,16 @@ public class MainPanel extends JPanel {
         return frames;
     }
 
+    /**
+     * Har som syfte att skapa en form på skatter, den kontrolleras sedan om den valda formen kommer få plats på brädet
+     * genom att checka så att inget av indexarna hamnar utanför brädet.
+     * @param type typen av form som ska läggas till.
+     * @param sizeOfBoard Storleken på brädet, för att kunna kontrollera om formen får plats.
+     * @param startPosition Startposition för formen, ifrån denna utgår formen.
+     * @return en int-array med alla positioner som ska användas, dessa hämtas sedan av generateBoard och placeras ut
+     * på samma index som int-arrayen säger. Om en position inte går att skapa returneras alla ints som -1.
+     * @author Christoffer Björnheimer
+     */
     public int[] treasureShape(int type, int sizeOfBoard, int startPosition) {
         int[] positions = new int[5];
         boolean isValid = true;
@@ -212,12 +216,17 @@ public class MainPanel extends JPanel {
         return positions;
     }
 
-
+    /**
+     * Metod för att kolla om formens alla indexar är tomma.
+     * @param startIndex indexet som formen utgår ifrån
+     * @param shape typen av shape som ska kontrolleras
+     * @return en boolean som returnerar false ifall något index som ingår i den specifika Shapen är upptaget
+     * @author Christoffer Björnheimer
+     */
     public boolean isValidPlacement(int startIndex, int shape) {
         if (shape == -1) {
             return false;
         }
-
 
         switch (shape) {
             case 0: // Enkel treasure
