@@ -1,58 +1,86 @@
 package Controller;
 
+import Model.Player;
 import View.*;
 
-import java.awt.event.ActionListener;
+import javax.swing.*;
 
 public class Controller {
     private MainFrame view;
     private ScoreBoard scoreBoard;
     private MainPanel mainPanel;
+    private Player player1;
+    private Player player2;
+    private Player activePlayer;
 
     public Controller() {
-        int sizeOfBoard = 10; // Kan inte sättas högre än 20
+        int sizeOfBoard = 10;
         view = new MainFrame(800, 800, this, sizeOfBoard);
         scoreBoard = view.getScoreBoard();
         mainPanel = view.getMainPanel();
-
         setActionListeners();
+        startGame();
+    }
+
+    public void startGame() {
+        player1 = new Player();
+        player2 = new Player();
+        activePlayer = player1;
+        scoreBoard.setGameDirector("Välkommen, Player 1, gör ditt drag");
+    }
+
+    public void changePlayer() {
+        if (activePlayer == player1) {
+            activePlayer = player2;
+            scoreBoard.setGameDirector("Player 2, gör ditt drag");
+        } else {
+            activePlayer = player1;
+            scoreBoard.setGameDirector("Player 1, gör ditt drag");
+        }
+        scoreBoard.setPlayer1Label(String.format("Player 1:   Antal liv: %s   Poäng: %s", player1.getCrewMembers(), player1.getScore()));
+        scoreBoard.setPLayer2Label(String.format("Player 2:   Antal liv: %s   Poäng: %s", player2.getCrewMembers(), player2.getScore()));
+    }
+
+    private void updateScoreBoard() {
+        scoreBoard.setPlayer1Label(String.format("Player 1:   Antal liv: %s   Poäng: %s", player1.getCrewMembers(), player1.getScore()));
+        scoreBoard.setPLayer2Label(String.format("Player 2:   Antal liv: %s   Poäng: %s", player2.getCrewMembers(), player2.getScore()));
     }
 
     private void addPoints(int index) {
         int pointsToAdd = 0;
-        Frame clickedFrame = mainPanel.getFrame(index); // Få den klickade rutan
-        int frameValue = Integer.parseInt(clickedFrame.getValue()); // Få värdet för den klickade rutan
-        int treasureNbr = clickedFrame.getPartOfTreasure(); // Få treasureNbr för skatten
+        Frame clickedFrame = mainPanel.getFrame(index);
+        int frameValue = Integer.parseInt(clickedFrame.getValue());
+        int treasureNbr = clickedFrame.getPartOfTreasure();
 
-        // Kontrollera om det är en TreasureFrame och om den är avslöjad
         if (treasureNbr != -1 && clickedFrame instanceof TreasureFrame) {
             boolean allRevealed = true;
 
             // Kontrollera om alla delar av skatten är avslöjade
             for (Frame frame : mainPanel.getBoard()) {
-                if (frame instanceof TreasureFrame && frame.getPartOfTreasure() == treasureNbr) {
-                    if (!frame.isClicked()) { // Om en del av skatten inte är avslöjad
-                        allRevealed = false;
-                        break;
-                    }
+                if (frame instanceof TreasureFrame && frame.getPartOfTreasure() == treasureNbr && !frame.isClicked()) {
+                    allRevealed = false;
+                    break;
                 }
             }
 
-            // Om alla delar är avslöjade, addera poäng
             if (allRevealed) {
                 // Lägg till poäng för hela skatten
                 for (Frame frame : mainPanel.getBoard()) {
                     if (frame instanceof TreasureFrame && frame.getPartOfTreasure() == treasureNbr) {
-                        pointsToAdd += Integer.parseInt(frame.getValue()); // Lägg till poäng från alla delar
+                        pointsToAdd += Integer.parseInt(frame.getValue());
                     }
                 }
                 scoreBoard.setGameMessage("Du hittade hela skatten och får " + pointsToAdd + " poäng.");
                 if (pointsToAdd == 100) {
                     scoreBoard.setGameMessage("Du hittade en hemlig skatt! Grattis till: " + pointsToAdd + " poäng!");
                 }
+            } else {
+                // Lägg till endast poäng för den enskilda delen av skatten
+                pointsToAdd += frameValue;
+                scoreBoard.setGameMessage("Du hittade en del av en skatt! Fortsätt leta efter resten.");
             }
         } else {
-            // Om det inte är en treasure eller den inte är avslöjad, ge feedback
+            // Hantera andra typer av rutor
             if (frameValue == 0) {
                 scoreBoard.setGameMessage("Miss");
             } else if (frameValue == 5) {
@@ -62,10 +90,9 @@ public class Controller {
             }
         }
 
-        // Uppdatera poängen
-        scoreBoard.updateScore(pointsToAdd);
-        String player1 = "Player 1";
-        scoreBoard.setPlayer1Label(String.format("%s %n %s", player1,pointsToAdd)+"p");
+        // Uppdatera poängen för den aktiva spelaren
+        activePlayer.addToScore(pointsToAdd); // Förutsätter en `addToScore`-metod
+        updateScoreBoard();
     }
 
 
@@ -73,43 +100,66 @@ public class Controller {
         Frame[] frames = mainPanel.getBoard();
         for (int i = 0; i < frames.length; i++) {
             final int index = i;
-            frames[i].addActionListener(e -> handleTileClick(index)); // Koppla action till varje ruta
+            frames[i].addActionListener(e -> handleFrameClick(index));
         }
-        scoreBoard.getResetButton().addActionListener(e -> handleResetButtonClick());
     }
 
-
-    public void handleTileClick(int index) {
+    public void handleFrameClick(int index) {
         Frame frame = mainPanel.getFrame(index);
-
         if (!frame.isClicked()) {
+            if (frame instanceof TrapFrame) {
+                activePlayer.killCrewMember();
+                scoreBoard.setGameMessage("Du förlorade ett liv!");
+            }
             mainPanel.revealFrame(frame);
-        }
-        addPoints(index);
+            addPoints(index);
 
-    }
-
-
-    // Resetknappen i ScoreBoard
-    public void handleResetButtonClick() {
-        scoreBoard.resetScore(); // Nollställ poängen
-        view.resetBoard();       // Skapa ny spelplan
-        mainPanel = view.getMainPanel(); // Hämta den nya spelplanen
-        setActionListeners();    // Koppla ActionListeners till den nya spelplanen
-        scoreBoard.setGameMessage("Poängen har nollställts. Börja om!");
-    }
-    public void removeActionListeners() {
-        for (Frame frame : mainPanel.getBoard()) {
-            if (frame != null) {
-                for (ActionListener al : frame.getActionListeners()) {
-                    frame.removeActionListener(al);
-                }
+            if (player1.getCrewMembers() <= 0 || player2.getCrewMembers() <= 0) {
+                endGame();
+            } else {
+                changePlayer();
             }
         }
     }
 
+    private void endGame() {
+        scoreBoard.setGameDirector("Spelet är över!");
+        JFrame f = new JFrame();
+
+        int choice = JOptionPane.showOptionDialog(
+                f,
+                "Spelet är över! Vad vill du göra?",
+                "Spelet är över",
+                JOptionPane.YES_NO_OPTION,
+                JOptionPane.QUESTION_MESSAGE,
+                null,
+                new String[]{"Ny runda", "Avsluta"},
+                "Ny runda"
+        );
+
+        if (choice == JOptionPane.YES_OPTION) {
+            resetGame();
+        } else if (choice == JOptionPane.NO_OPTION) {
+            System.exit(0);
+        }
+    }
+    private void resetGame() {
+        player1 = new Player();
+        player2 = new Player();
+        activePlayer = player1;
+        int sizeOfBoard=10;
+
+        if (view != null) {
+            view.dispose();  // Stänger, sparar mycket datorkraft märkte jag.
+        }
+        view = new MainFrame(800, 800, this, sizeOfBoard);
+        scoreBoard = view.getScoreBoard();
+        mainPanel = view.getMainPanel();
+        scoreBoard.setGameDirector("Välkommen, Player 1, gör ditt drag");
+        setActionListeners();
+    }
 
     public void showHiscore() {
-        // Här kan du lägga till kod för att visa högsta poäng
+        // Lägg till kod för att visa högsta poäng
     }
 }
