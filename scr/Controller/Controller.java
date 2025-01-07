@@ -1,6 +1,6 @@
 package Controller;
 
-import Model.Player;
+import Model.*;
 import View.*;
 
 import javax.swing.*;
