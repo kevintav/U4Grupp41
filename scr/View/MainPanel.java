@@ -82,7 +82,13 @@ public class MainPanel extends JPanel {
             }
             add(frames[i]);
         }
+        //färgsätt på fint sätt
+        for (int i =0 ; i < frames.length; i++){
+            frames[i].setBackground(new Color(230-i*3/2, 160, 130));
+        }
     }
+
+
 
 
     public void revealFrame(Frame click) {
@@ -201,7 +207,6 @@ public class MainPanel extends JPanel {
                 positions[2] = startPosition + sizeOfBoard;
                 positions[3] = startPosition + sizeOfBoard + 1;
                 positions[4] = -1;
-
 
                 if (startPosition % sizeOfBoard == sizeOfBoard - 1 ||
                         positions[3] >= sizeOfBoard * sizeOfBoard ||
