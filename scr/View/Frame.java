@@ -10,7 +10,7 @@ public class Frame extends JButton {
     /**
      * Constructor som används för att visa index på varje knapp.
      */
-    public Frame(MainFrame mainFrame, Color color, int index) {
+    public Frame(NewMainFrame mainFrame, Color color, int index) {
         this.setBackground(color);
         this.setVisible(true);
         this.setText(String.valueOf(index));
@@ -22,7 +22,7 @@ public class Frame extends JButton {
      * @param mainFrame
      * @param color     Author Christoffer Björnheimer
      */
-    public Frame(MainFrame mainFrame, Color color) {
+    public Frame(NewMainFrame mainFrame, Color color) {
         this.setBackground(color);
         this.setVisible(true);
         this.setForeground(Color.WHITE);

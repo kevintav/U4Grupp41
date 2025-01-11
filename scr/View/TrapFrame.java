@@ -8,7 +8,7 @@ public class TrapFrame extends Frame {
     private Color background= Color.RED;
     private String penalty;
 
-    public TrapFrame(MainFrame mainFrame, Color color) {
+    public TrapFrame(NewMainFrame mainFrame, Color color) {
         super(mainFrame, color);
         Random random=new Random();
 

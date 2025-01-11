@@ -55,7 +55,6 @@ public class HiscoreView extends JPanel {
             @Override
             public void actionPerformed(ActionEvent e) {
                 hiscoreFrame.dispose();
-
             }
         });
 
