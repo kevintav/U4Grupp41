@@ -49,7 +49,7 @@ public class MainPanel extends JPanel {
             if (isValidPlacement(randomIndex, randomTreasure)) {
                 for (int k : shapeIndexes) {
                     if (k != -1 && k < frames.length) { // Placera endast på giltiga positioner
-                        frames[k] = new TreasureFrame(mainFrame, new Color(120, 160, 130), treasureCount);
+                        //frames[k] = new TreasureFrame(mainFrame, new Color(120, 160, 130), treasureCount);
                     }
                 }
                 treasureCount++; // Öka räknaren endast om placeringen är giltig
@@ -61,7 +61,7 @@ public class MainPanel extends JPanel {
         for (int i = 0; i < sizeOfBoard * sizeOfBoard; i++) {
             int randomPlace = randomize.nextInt(100);
             if (randomPlace >= 85 && frames[i] == null && traps<5) {
-                frames[i] = new TrapFrame(mainFrame, new Color(220, 160, 130));
+                //frames[i] = new TrapFrame(mainFrame, new Color(220, 160, 130));
                 traps++;
             }
         }
@@ -70,15 +70,15 @@ public class MainPanel extends JPanel {
         for (int i = 0; i < sizeOfBoard * sizeOfBoard; i++) {
             int randomPlace = randomize.nextInt(100);
             if (randomPlace == 50 && frames[i] == null) {
-                frames[i] = new TreasureFrame(mainFrame, new Color(120, 160, 130), treasureCount);
-                frames[i].makeEpicLoot();
+                //frames[i] = new TreasureFrame(mainFrame, new Color(120, 160, 130), treasureCount);
+                //frames[i].makeEpicLoot();
             }
         }
 
         // Skapa tomma rutor
         for (int i = 0; i < sizeOfBoard * sizeOfBoard; i++) {
             if (frames[i] == null) {
-                frames[i] = new Frame(mainFrame, new Color(120, 160, 130));
+                //frames[i] = new Frame(mainFrame, new Color(120, 160, 130));
             }
             add(frames[i]);
         }

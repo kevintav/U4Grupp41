@@ -9,7 +9,7 @@ public class TreasureFrame extends Frame {
     private boolean isEpic = false;
     private boolean allRevealed=false;
 
-    public TreasureFrame(MainFrame mainFrame, Color color, int partOfTreasure) {
+    public TreasureFrame(NewMainFrame mainFrame, Color color, int partOfTreasure) {
         super(mainFrame, color);
         this.partOfTreasure = partOfTreasure;
 
