@@ -7,11 +7,13 @@ public class BoardManager {
     private int sizeOfBoard;
     private int treasureCount;
     private String[] frames;
+    private int[] treasureIndexes;
 
     public BoardManager(int sizeOfBoard){
     this.sizeOfBoard=sizeOfBoard;
         this.frames=new String[sizeOfBoard*sizeOfBoard];
     generateBoard();
+
 
 
     }
@@ -20,9 +22,13 @@ public class BoardManager {
         return frames;
     }
 
+    public int[] getTreasureIndexes() {
+        return treasureIndexes;
+    }
 
     private void generateBoard() {
         Random randomize = new Random();
+        treasureIndexes=new int[frames.length];
 
 
         while (treasureCount < (sizeOfBoard * sizeOfBoard) / 10) {
@@ -37,6 +43,7 @@ public class BoardManager {
                 for (int k : shapeIndexes) {
                     if (k != -1 && k < frames.length) { // Placera endast på giltiga positioner
                         frames[k] = "Treasure";;
+                        treasureIndexes[k]=treasureCount;
                     }
                 }
                 treasureCount++; // Öka räknaren endast om placeringen är giltig
