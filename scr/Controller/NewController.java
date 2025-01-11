@@ -6,6 +6,7 @@ import View.Frame;
 
 import javax.swing.*;
 import java.awt.*;
+import java.util.Arrays;
 
 public class NewController {
     private NewMainFrame view;
@@ -27,6 +28,7 @@ public class NewController {
 
         setActionListeners();
         startGame();
+        System.out.println(Arrays.toString(boardManager.getTreasureIndexes()));
     }
 
     public void startGame() {
@@ -52,6 +54,10 @@ public class NewController {
         scoreBoard.setPlayer1Label(String.format("Player 1:   Antal liv: %s   Poäng: %s", player1.getCrewMembers(), player1.getScore()));
         scoreBoard.setPLayer2Label(String.format("Player 2:   Antal liv: %s   Poäng: %s", player2.getCrewMembers(), player2.getScore()));
     }
+
+    public int getTreasureNbr(int index){
+        int[] plopp=boardManager.getTreasureIndexes();
+    return plopp[index];}
 
     private void addPoints(int index) {
         int pointsToAdd = 0;
@@ -128,6 +134,11 @@ public class NewController {
             }
         }
     }
+
+
+
+
+
 
     private void endGame() {
         scoreBoard.setGameDirector("Spelet är över!");

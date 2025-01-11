@@ -1,5 +1,5 @@
 package View;
-
+import Controller.NewController;
 import javax.swing.*;
 import java.awt.*;
 import java.util.Arrays;
@@ -9,13 +9,15 @@ public class NewMainPanel extends JPanel {
     private int sizeOfBoard;
     private Frame[] frames;
     private NewMainFrame mainFrame;
-    private int treasureCount = 0; // Räknar antalet placerade skatter
+    private int treasureCount = 0;
+    private NewController controller;
 
 
-    public NewMainPanel(int width, int height, NewMainFrame mainFrame, int sizeOfBoard, String[] indexes) {
+    public NewMainPanel(NewController controller,int width, int height, NewMainFrame mainFrame, int sizeOfBoard, String[] indexes) {
         this.mainFrame = mainFrame;
         this.sizeOfBoard = sizeOfBoard;
         this.frames = new Frame[sizeOfBoard * sizeOfBoard];
+        this.controller=controller;
         setBoard(indexes);
 
 
@@ -33,22 +35,19 @@ public class NewMainPanel extends JPanel {
      * @ Author Christoffer Björnheimer
      */
     private void setBoard(String[] indexes) {
-        for(int i=0; i<20; i++){
-            System.out.println(indexes[i]);
-        }
-
 
         this.frames=new Frame[indexes.length];
         for(int i = 0; i<indexes.length; i++){
            if(Objects.equals(indexes[i], "Trap")){
-                frames[i]=new TrapFrame(mainFrame, new Color(220, 160, 130));
+                frames[i]=new TrapFrame(mainFrame, Color.BLACK);
             } else if(Objects.equals(indexes[i], "Treasure")){
-                frames[i] = new TreasureFrame(mainFrame, new Color(120, 160, 130), treasureCount);
+                frames[i] = new TreasureFrame(mainFrame, Color.BLACK, controller.getTreasureNbr(i));
+
             } else if(Objects.equals(indexes[i], "Epic")){
-                frames[i] = new TreasureFrame(mainFrame, new Color(120, 160, 130), treasureCount);
+                frames[i] = new TreasureFrame(mainFrame, Color.BLACK, treasureCount);
                 frames[i].makeEpicLoot();
             }  if(Objects.equals(indexes[i], "Empty")){
-                frames[i] = new Frame(mainFrame,new Color(120, 160, 130));
+                frames[i] = new Frame(mainFrame,Color.BLACK);
             }
 
         }

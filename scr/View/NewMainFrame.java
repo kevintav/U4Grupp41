@@ -25,7 +25,7 @@ public class NewMainFrame extends JFrame {
         scoreBoard = new ScoreBoard(boardWidth, scoreboardHeight);
         this.add(scoreBoard, BorderLayout.NORTH);
 
-        mainPanel = new NewMainPanel(boardWidth, boardHeight, this, sizeOfBoard, indexes);
+        mainPanel = new NewMainPanel(controller,boardWidth, boardHeight, this, sizeOfBoard, indexes);
         this.add(mainPanel, BorderLayout.CENTER);
 
         this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
