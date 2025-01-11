@@ -5,7 +5,6 @@ import View.*;
 import View.Frame;
 
 import javax.swing.*;
-import java.awt.*;
 
 public class Controller {
     private MainFrame view;
