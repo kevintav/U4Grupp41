@@ -1,5 +1,7 @@
 package View;
+
 import Controller.NewController;
+
 import javax.swing.*;
 import java.awt.*;
 import java.util.Arrays;
@@ -13,11 +15,11 @@ public class NewMainPanel extends JPanel {
     private NewController controller;
 
 
-    public NewMainPanel(NewController controller,int width, int height, NewMainFrame mainFrame, int sizeOfBoard, String[] indexes) {
+    public NewMainPanel(NewController controller, int width, int height, NewMainFrame mainFrame, int sizeOfBoard, String[] indexes) {
         this.mainFrame = mainFrame;
         this.sizeOfBoard = sizeOfBoard;
         this.frames = new Frame[sizeOfBoard * sizeOfBoard];
-        this.controller=controller;
+        this.controller = controller;
         setBoard(indexes);
 
 
@@ -36,22 +38,23 @@ public class NewMainPanel extends JPanel {
      */
     private void setBoard(String[] indexes) {
 
-        this.frames=new Frame[indexes.length];
-        for(int i = 0; i<indexes.length; i++){
-           if(Objects.equals(indexes[i], "Trap")){
-                frames[i]=new TrapFrame(mainFrame, Color.BLACK);
-            } else if(Objects.equals(indexes[i], "Treasure")){
+        this.frames = new Frame[indexes.length];
+        for (int i = 0; i < indexes.length; i++) {
+            if (Objects.equals(indexes[i], "Trap")) {
+                frames[i] = new TrapFrame(mainFrame, Color.BLACK);
+            } else if (Objects.equals(indexes[i], "Treasure")) {
                 frames[i] = new TreasureFrame(mainFrame, Color.BLACK, controller.getTreasureNbr(i));
 
-            } else if(Objects.equals(indexes[i], "Epic")){
+            } else if (Objects.equals(indexes[i], "Epic")) {
                 frames[i] = new TreasureFrame(mainFrame, Color.BLACK, treasureCount);
                 frames[i].makeEpicLoot();
-            }  if(Objects.equals(indexes[i], "Empty")){
-                frames[i] = new Frame(mainFrame,Color.BLACK);
+            }
+            if (Objects.equals(indexes[i], "Empty")) {
+                frames[i] = new Frame(mainFrame, Color.BLACK);
             }
 
         }
-        for (int i =0 ; i < frames.length; i++) {
+        for (int i = 0; i < frames.length; i++) {
             frames[i].setBackground(new Color(230 - i * 3 / 2, 160, 130));
             add(frames[i]);
         }
@@ -66,8 +69,8 @@ public class NewMainPanel extends JPanel {
         }
     }
 
-    public void revealAllFrames(){
-        for(int i = 0; i<frames.length; i++){
+    public void revealAllFrames() {
+        for (int i = 0; i < frames.length; i++) {
             frames[i].reveal();
         }
     }
@@ -105,8 +108,6 @@ public class NewMainPanel extends JPanel {
      * på samma index som int-arrayen säger. Om en position inte går att skapa returneras alla ints som -1.
      * @author Christoffer Björnheimer
      */
-
-
 
 
 }

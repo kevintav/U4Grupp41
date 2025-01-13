@@ -7,7 +7,7 @@ public class TreasureFrame extends Frame {
     private Color background = new Color(230, 218, 110);
     private int partOfTreasure;
     private boolean isEpic = false;
-    private boolean allRevealed=false;
+    private boolean allRevealed = false;
 
     public TreasureFrame(NewMainFrame mainFrame, Color color, int partOfTreasure) {
         super(mainFrame, color);
@@ -34,11 +34,11 @@ public class TreasureFrame extends Frame {
     }
 
     public void fullReveal() {
-        allRevealed=true;
-        if (!isEpic){
+        allRevealed = true;
+        if (!isEpic) {
             setValue(10);
             this.setText("S");
-            this.setBackground(new Color (230,130,80));
+            this.setBackground(new Color(230, 130, 80));
             setClicked(true);
         }
     }

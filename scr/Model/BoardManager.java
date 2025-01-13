@@ -9,16 +9,15 @@ public class BoardManager {
     private String[] frames;
     private int[] treasureIndexes;
 
-    public BoardManager(int sizeOfBoard){
-    this.sizeOfBoard=sizeOfBoard;
-        this.frames=new String[sizeOfBoard*sizeOfBoard];
-    generateBoard();
-
+    public BoardManager(int sizeOfBoard) {
+        this.sizeOfBoard = sizeOfBoard;
+        this.frames = new String[sizeOfBoard * sizeOfBoard];
+        generateBoard();
 
 
     }
 
-    public String[] getFrames(){
+    public String[] getFrames() {
         return frames;
     }
 
@@ -28,7 +27,7 @@ public class BoardManager {
 
     private void generateBoard() {
         Random randomize = new Random();
-        treasureIndexes=new int[frames.length];
+        treasureIndexes = new int[frames.length];
 
 
         while (treasureCount < (sizeOfBoard * sizeOfBoard) / 10) {
@@ -42,8 +41,9 @@ public class BoardManager {
             if (isValidPlacement(randomIndex, randomTreasure)) {
                 for (int k : shapeIndexes) {
                     if (k != -1 && k < frames.length) { // Placera endast på giltiga positioner
-                        frames[k] = "Treasure";;
-                        treasureIndexes[k]=treasureCount;
+                        frames[k] = "Treasure";
+                        ;
+                        treasureIndexes[k] = treasureCount;
                     }
                 }
                 treasureCount++; // Öka räknaren endast om placeringen är giltig
@@ -51,10 +51,10 @@ public class BoardManager {
         }
 
         // Skapa fällor
-        int traps=0;
+        int traps = 0;
         for (int i = 0; i < sizeOfBoard * sizeOfBoard; i++) {
             int randomPlace = randomize.nextInt(100);
-            if (randomPlace >= 85 && frames[i] == null && traps<5) {
+            if (randomPlace >= 85 && frames[i] == null && traps < 5) {
                 frames[i] = "Trap";
                 traps++;
             }

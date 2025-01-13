@@ -1,7 +1,9 @@
 package View;
 
 import javax.swing.*;
+
 import Controller.NewController;
+
 import java.awt.*;
 
 public class NewMainFrame extends JFrame {
@@ -25,7 +27,7 @@ public class NewMainFrame extends JFrame {
         scoreBoard = new ScoreBoard(boardWidth, scoreboardHeight);
         this.add(scoreBoard, BorderLayout.NORTH);
 
-        mainPanel = new NewMainPanel(controller,boardWidth, boardHeight, this, sizeOfBoard, indexes);
+        mainPanel = new NewMainPanel(controller, boardWidth, boardHeight, this, sizeOfBoard, indexes);
         this.add(mainPanel, BorderLayout.CENTER);
 
         this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);

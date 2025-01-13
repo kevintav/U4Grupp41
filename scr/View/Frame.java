@@ -26,12 +26,12 @@ public class Frame extends JButton {
         this.setBackground(color);
         this.setVisible(true);
         this.setForeground(Color.WHITE);
-        this.setMargin(new Insets(0,0,0,0));
+        this.setMargin(new Insets(0, 0, 0, 0));
         this.setFont(new Font("Arial", Font.BOLD, 40));
     }
 
-    public void hidePanel(){
-        clicked=false;
+    public void hidePanel() {
+        clicked = false;
         this.setBackground(new Color(120, 130, 130));
         this.setText("");
 
@@ -42,7 +42,7 @@ public class Frame extends JButton {
     }
 
     public void reveal() {
-        if(!isClicked()){
+        if (!isClicked()) {
             this.setBackground(Color.WHITE);
             this.setForeground(Color.GRAY);
             this.setText(String.valueOf("X"));//Denna måste ändras sen till att visa typ ett attribute som är en subklass. (treasure, trap)
@@ -58,16 +58,18 @@ public class Frame extends JButton {
 
 
     public String getValue() {
-    return String.valueOf(0);}
+        return String.valueOf(0);
+    }
 
-    public void setValue(int value){
+    public void setValue(int value) {
     }
 
     public void makeEpicLoot() {
     }
 
     public int getPartOfTreasure() {
-    return -1;}
+        return -1;
+    }
 
     public void fullReveal() {
 

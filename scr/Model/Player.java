@@ -3,8 +3,10 @@ package Model;
 public class Player {
     private int crewMembers = 3;
     private int score;
+    private String name;
 
-    public Player(){
+    public Player(String name) {
+        this.name = name;
     }
 
     public int getCrewMembers() {
@@ -14,11 +16,12 @@ public class Player {
     public void killCrewMember() {
         this.crewMembers--;
     }
-    public void setScore(int score){
+
+    public void setScore(int score) {
         this.score += score;
     }
 
-    public int getScore(){
+    public int getScore() {
         return score;
     }
 
@@ -26,4 +29,7 @@ public class Player {
         this.score += points;
     }
 
+    public String getName() {
+        return name;
+    }
 }

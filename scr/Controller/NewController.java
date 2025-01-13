@@ -12,52 +12,59 @@ public class NewController {
     private NewMainFrame view;
     private ScoreBoard scoreBoard;
     private NewMainPanel mainPanel;
-    private Player player1;
-    private Player player2;
     private Player activePlayer;
     private BoardManager boardManager;
+    private Hiscore Hiscore;
+    private HiscoreView HiscoreView;
+    private Player player1;
+    private Player player2;
+    private String player1Name;
+    private String player2Name;
 
     public NewController() {
         int sizeOfBoard = 10;
 
-        this.boardManager=new BoardManager(sizeOfBoard);
+        this.boardManager = new BoardManager(sizeOfBoard);
+        this.Hiscore = new Hiscore(10);
 
-        view = new NewMainFrame(800, 800, this, sizeOfBoard , boardManager.getFrames());
+        view = new NewMainFrame(800, 800, this, sizeOfBoard, boardManager.getFrames());
         scoreBoard = view.getScoreBoard();
         mainPanel = view.getMainPanel();
 
         setActionListeners();
         startGame();
-        System.out.println(Arrays.toString(boardManager.getTreasureIndexes()));
     }
 
     public void startGame() {
-        player1 = new Player();
-        player2 = new Player();
+        player1Name = JOptionPane.showInputDialog("Player 1, what is your name?");
+        player1 = new Player(player1Name);
+        player2Name = JOptionPane.showInputDialog("Player 2, what is your name?");
+        player2 = new Player(player2Name);
         activePlayer = player1;
-        scoreBoard.setGameDirector("Välkommen, Player 1, gör ditt drag");
+        scoreBoard.setGameDirector("Välkommen, "+player1Name+", gör ditt drag");
     }
 
     public void changePlayer() {
         if (activePlayer == player1) {
             activePlayer = player2;
-            scoreBoard.setGameDirector("Player 2, gör ditt drag");
+            scoreBoard.setGameDirector(player2Name+", gör ditt drag");
         } else {
             activePlayer = player1;
-            scoreBoard.setGameDirector("Player 1, gör ditt drag");
+            scoreBoard.setGameDirector(player1Name+", gör ditt drag");
         }
-        scoreBoard.setPlayer1Label(String.format("Player 1:   Antal liv: %s   Poäng: %s", player1.getCrewMembers(), player1.getScore()));
-        scoreBoard.setPLayer2Label(String.format("Player 2:   Antal liv: %s   Poäng: %s", player2.getCrewMembers(), player2.getScore()));
+        scoreBoard.setPlayer1Label(String.format(player1Name+":   Antal liv: %s   Poäng: %s", player1.getCrewMembers(), player1.getScore()));
+        scoreBoard.setPLayer2Label(String.format(player2Name+":   Antal liv: %s   Poäng: %s", player2.getCrewMembers(), player2.getScore()));
     }
 
     private void updateScoreBoard() {
-        scoreBoard.setPlayer1Label(String.format("Player 1:   Antal liv: %s   Poäng: %s", player1.getCrewMembers(), player1.getScore()));
-        scoreBoard.setPLayer2Label(String.format("Player 2:   Antal liv: %s   Poäng: %s", player2.getCrewMembers(), player2.getScore()));
+        scoreBoard.setPlayer1Label(String.format(player1Name+":   Antal liv: %s   Poäng: %s", player1.getCrewMembers(), player1.getScore()));
+        scoreBoard.setPLayer2Label(String.format(player2Name+":   Antal liv: %s   Poäng: %s", player2.getCrewMembers(), player2.getScore()));
     }
 
-    public int getTreasureNbr(int index){
-        int[] plopp=boardManager.getTreasureIndexes();
-    return plopp[index];}
+    public int getTreasureNbr(int index) {
+        int[] plopp = boardManager.getTreasureIndexes();
+        return plopp[index];
+    }
 
     private void addPoints(int index) {
         int pointsToAdd = 0;
@@ -136,36 +143,47 @@ public class NewController {
     }
 
 
-
-
-
-
-    private void endGame() {
+    public void endGame() {
         scoreBoard.setGameDirector("Spelet är över!");
         mainPanel.revealAllFrames();
-        HiscoreView hiscores = new HiscoreView();
-        //resetGame();
+
+        Player Winner = determineTheWinner();
+        if (Winner != null && Winner.getScore() > 0) {
+            Hiscore.addScore(Winner.getName(), Winner.getScore());
+        }
+        showHighScore();
     }
 
-    private void resetGame() {
-        player1 = new Player();
-        player2 = new Player();
+    public void resetGame() {
+        player1 = new Player(player1Name);
+        player2 = new Player(player2Name);
         activePlayer = player1;
-        int sizeOfBoard=10;
+
         if (view != null) {
             view.dispose();  // Stänger, sparar mycket datorkraft märkte jag.
         }
 
-
-
-        //view = new NewMainFrame(800, 800, this, sizeOfBoard);
+        int sizeOfBoard = 10;
+        view = new NewMainFrame(800, 800, this, sizeOfBoard, boardManager.getFrames());
         scoreBoard = view.getScoreBoard();
         mainPanel = view.getMainPanel();
-        scoreBoard.setGameDirector("Välkommen, Player 1, gör ditt drag");
+        scoreBoard.setGameDirector("Välkommen, "+player1Name+", gör ditt drag");
         setActionListeners();
     }
 
-    public void showHiscore() {
-        // Lägg till kod för att visa högsta poäng
+    public Player determineTheWinner() {
+        if (player1.getCrewMembers() > 0) {
+            return player1;
+        } else {
+            return player2;
+        }
+    }
+
+    public void showHighScore() {
+        if (HiscoreView == null) {
+            HiscoreView = new HiscoreView(this);
+        }
+        HiscoreView.updateHiscore(Hiscore.getHiscores());
+        HiscoreView.showHighScore();
     }
 }

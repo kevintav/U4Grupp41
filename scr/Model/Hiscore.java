@@ -1,19 +1,27 @@
 package Model;
 
+import java.util.ArrayList;
+import java.util.Comparator;
+import java.util.List;
 
-//TODO Hanterar skrivandet och sparande till en fil
 public class Hiscore {
-    public String[] hiscore;
+    private final List<String> hiscores = new ArrayList<>();
+    private final int maxEntries;
 
-    public void updateHiscores(String[] hiscore) {
-        this.hiscore = hiscore;
+    public Hiscore(int maxEntries) {
+        this.maxEntries = maxEntries;
     }
 
-    public String[] getHiscores() {
-        return hiscore;
+    public void addScore(String playerName, int score) {
+        String entry = playerName + " - " + score;
+        hiscores.add(entry);
+        hiscores.sort(Comparator.comparingInt(newEntry -> -Integer.parseInt(newEntry.split(" - ")[1])));
+        if (hiscores.size() > maxEntries) {
+            hiscores.remove(hiscores.size() - 1);
+        }
     }
 
-    public void setHiscore(String[] hiscore) {
-        this.hiscore = hiscore;
+    public List<String> getHiscores() {
+        return new ArrayList<>(hiscores);
     }
 }
