@@ -3,7 +3,6 @@ package Controller;
 import Model.*;
 import View.*;
 import View.Frame;
-
 import javax.swing.*;
 import java.awt.*;
 import java.util.Arrays;
@@ -26,11 +25,15 @@ public class NewController {
 
         this.boardManager = new BoardManager(sizeOfBoard);
         this.Hiscore = new Hiscore(10);
+        Hiscore.loadHighScoreFile("highscores.txt");
 
         view = new NewMainFrame(800, 800, this, sizeOfBoard, boardManager.getFrames());
         scoreBoard = view.getScoreBoard();
         mainPanel = view.getMainPanel();
 
+        scoreBoard.getResetButton().addActionListener(e -> {
+            resetGame();
+        });
         setActionListeners();
         startGame();
     }
@@ -127,10 +130,12 @@ public class NewController {
     public void handleFrameClick(int index) {
         Frame frame = mainPanel.getFrame(index);
         if (!frame.isClicked()) {
-            if (frame instanceof TrapFrame) {
-                activePlayer.killCrewMember();
-                scoreBoard.setGameMessage("Du förlorade ett liv!");
+            if (frame instanceof TrapFrame trap) {
+                handleTrap(trap.getPenalty());
+            } else if (frame instanceof SurpriseFrame surprise) {
+                activePlayer.addCrewMember();
             }
+
             mainPanel.revealFrame(frame);
             addPoints(index);
 
@@ -142,6 +147,30 @@ public class NewController {
         }
     }
 
+    private void handleTrap(String penalty) {
+        switch (penalty) {
+            case "KILL_CREW":
+                activePlayer.killCrewMember();
+                scoreBoard.setGameMessage(activePlayer.getName()+" lost a crew member");
+                break;
+            case "STEAL_POINTS":
+                int stolenPoints = activePlayer.getScore() / 10;
+                activePlayer.addToScore(-stolenPoints);
+                getOpponentPlayer().addToScore(stolenPoints);
+                scoreBoard.setGameMessage(getOpponentPlayer().getName()+" stole "+stolenPoints+" from "+activePlayer.getName());
+                break;
+            case "LOSE_POINTS":
+                if (activePlayer.getScore() -30 >= 0) {
+                    activePlayer.addToScore(-30);
+                    scoreBoard.setGameMessage(activePlayer.getName()+" lost 30 points");
+                } else {
+                    scoreBoard.setGameMessage(activePlayer.getName()+" lost "+activePlayer.getScore()+" points");
+                    activePlayer.addToScore(-activePlayer.getScore());
+                }
+                break;
+        }
+        updateScoreBoard();
+    }
 
     public void endGame() {
         scoreBoard.setGameDirector("Spelet är över!");
@@ -150,6 +179,7 @@ public class NewController {
         Player Winner = determineTheWinner();
         if (Winner != null && Winner.getScore() > 0) {
             Hiscore.addScore(Winner.getName(), Winner.getScore());
+            Hiscore.saveHighScoreFile("highscores.txt");
         }
         showHighScore();
     }
@@ -168,6 +198,7 @@ public class NewController {
         scoreBoard = view.getScoreBoard();
         mainPanel = view.getMainPanel();
         scoreBoard.setGameDirector("Välkommen, "+player1Name+", gör ditt drag");
+        scoreBoard.getResetButton().addActionListener(e -> resetGame());
         setActionListeners();
     }
 
@@ -185,5 +216,9 @@ public class NewController {
         }
         HiscoreView.updateHiscore(Hiscore.getHiscores());
         HiscoreView.showHighScore();
+    }
+
+    public Player getOpponentPlayer() {
+        return (activePlayer == player1) ? player2 : player1;
     }
 }

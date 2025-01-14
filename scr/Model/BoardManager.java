@@ -29,7 +29,6 @@ public class BoardManager {
         Random randomize = new Random();
         treasureIndexes = new int[frames.length];
 
-
         while (treasureCount < (sizeOfBoard * sizeOfBoard) / 10) {
             int randomIndex = randomize.nextInt(sizeOfBoard * sizeOfBoard);
             int randomTreasure = randomize.nextInt(5);
@@ -42,7 +41,6 @@ public class BoardManager {
                 for (int k : shapeIndexes) {
                     if (k != -1 && k < frames.length) { // Placera endast på giltiga positioner
                         frames[k] = "Treasure";
-                        ;
                         treasureIndexes[k] = treasureCount;
                     }
                 }
@@ -52,11 +50,25 @@ public class BoardManager {
 
         // Skapa fällor
         int traps = 0;
-        for (int i = 0; i < sizeOfBoard * sizeOfBoard; i++) {
-            int randomPlace = randomize.nextInt(100);
-            if (randomPlace >= 85 && frames[i] == null && traps < 5) {
-                frames[i] = "Trap";
-                traps++;
+        while (traps < 3) {
+            for (int i = 0; i < sizeOfBoard * sizeOfBoard; i++) {
+                int randomPlace = randomize.nextInt(sizeOfBoard * sizeOfBoard);
+                if (randomPlace >= 85 && frames[i] == null && traps < 5) {
+                    TrapType trapType = TrapType.values()[randomize.nextInt(TrapType.values().length)];
+                    frames[i] = "Trap:"+trapType.name();
+                    traps++;
+                }
+            }
+        }
+
+        // skapar överraskningar med slumpmässig effekt
+        int surprises = 0;
+        while (surprises < 3) { // Limit to 3 surprises
+            int randomIndex = randomize.nextInt(sizeOfBoard * sizeOfBoard);
+            if (frames[randomIndex] == null) {
+                SurpriseType surpriseType = SurpriseType.values()[randomize.nextInt(SurpriseType.values().length)];
+                frames[randomIndex] = "Surprise:"+surpriseType.name();
+                surprises++;
             }
         }
 

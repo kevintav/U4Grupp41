@@ -37,25 +37,32 @@ public class NewMainPanel extends JPanel {
      * @ Author Christoffer Björnheimer
      */
     private void setBoard(String[] indexes) {
-
         this.frames = new Frame[indexes.length];
+
         for (int i = 0; i < indexes.length; i++) {
-            if (Objects.equals(indexes[i], "Trap")) {
-                frames[i] = new TrapFrame(mainFrame, Color.BLACK);
+            if (indexes[i].startsWith("Trap:")) {
+                String penalty = indexes[i].split(":")[1];
+                frames[i] = new TrapFrame(mainFrame, Color.RED, penalty);
+
             } else if (Objects.equals(indexes[i], "Treasure")) {
                 frames[i] = new TreasureFrame(mainFrame, Color.BLACK, controller.getTreasureNbr(i));
 
             } else if (Objects.equals(indexes[i], "Epic")) {
                 frames[i] = new TreasureFrame(mainFrame, Color.BLACK, treasureCount);
                 frames[i].makeEpicLoot();
-            }
-            if (Objects.equals(indexes[i], "Empty")) {
+
+            } else if (indexes[i].startsWith("Surprise:")) {
+                String effect = indexes[i].split(":")[1];
+                frames[i] = new SurpriseFrame(mainFrame, effect);
+
+            } else if (Objects.equals(indexes[i], "Empty")) {
                 frames[i] = new Frame(mainFrame, Color.BLACK);
             }
-
         }
+
+        // Set background color and add frames to the panel
         for (int i = 0; i < frames.length; i++) {
-            frames[i].setBackground(new Color(230 - i * 3 / 2, 160, 130));
+            //frames[i].setBackground(new Color(230 - i * 3 / 2, 160, 130));
             add(frames[i]);
         }
     }

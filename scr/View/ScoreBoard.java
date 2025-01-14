@@ -16,57 +16,52 @@ public class ScoreBoard extends JPanel {
         this.setPreferredSize(new Dimension(width, height));
         this.setBackground(new Color(250, 250, 250));
 
+        JPanel topPanel = new JPanel();
+        topPanel.setLayout(new GridLayout(1, 3)); // 1 row, 3 columns
+        topPanel.setBackground(new Color(100, 150, 150));
+
+        resetButton = new JButton("Reset");
+        resetButton.setFont(new Font("Arial", Font.BOLD, 12));
+        resetButton.setBackground(new Color(80, 120, 120));
+        resetButton.setForeground(Color.WHITE);
+        resetButton.setFocusPainted(false);
+        resetButton.setOpaque(true);
+        topPanel.add(resetButton);
+
         topLeftPanel = new JLabel("Player 1:   Antal liv: 3   Poäng: 0", SwingConstants.CENTER);
         topLeftPanel.setFont(new Font("Arial", Font.BOLD, 15));
         topLeftPanel.setForeground(Color.WHITE);
-        topLeftPanel.setBackground(new Color(100, 150, 150));
-        topLeftPanel.setPreferredSize(new Dimension(width / 2, 50));
         topLeftPanel.setOpaque(true);
-
-        scoreLabel = new JLabel("Score: " + score, SwingConstants.CENTER);
-        scoreLabel.setFont(new Font("Arial", Font.BOLD, 15));
-        scoreLabel.setForeground(Color.WHITE);
-        scoreLabel.setBackground(new Color(100, 150, 150));
-        scoreLabel.setPreferredSize(new Dimension(width / 2, 50));
-        scoreLabel.setOpaque(true);
+        topLeftPanel.setBackground(new Color(100, 150, 150));
+        topPanel.add(topLeftPanel);
 
         topRightPanel = new JLabel("Player 2:   Antal liv: 3   Poäng: 0", SwingConstants.CENTER);
         topRightPanel.setFont(new Font("Arial", Font.BOLD, 15));
         topRightPanel.setForeground(Color.WHITE);
         topRightPanel.setOpaque(true);
         topRightPanel.setBackground(new Color(100, 150, 150));
-        topRightPanel.setPreferredSize(new Dimension(width / 2, 50));
+        topPanel.add(topRightPanel);
 
         gameMessage = new JLabel("Välkommen", SwingConstants.CENTER);
         gameMessage.setFont(new Font("Arial", Font.BOLD, 15));
         gameMessage.setForeground(Color.WHITE);
         gameMessage.setOpaque(true);
         gameMessage.setBackground(new Color(80, 120, 120));
-        gameMessage.setPreferredSize(new Dimension(width / 2, 40));
+        gameMessage.setPreferredSize(new Dimension(width, 40));
 
         gameDirector = new JLabel("", SwingConstants.CENTER);
         gameDirector.setFont(new Font("Arial", Font.BOLD, 15));
         gameDirector.setBackground(new Color(80, 120, 120));
         gameDirector.setForeground(Color.white);
         gameDirector.setOpaque(true);
-        gameDirector.setPreferredSize(new Dimension(24, 60));
+        gameDirector.setPreferredSize(new Dimension(width, 40));
 
-        resetButton = new JButton("Reset");
-        resetButton.setFont(new Font("Arial", Font.BOLD, 15));
-        resetButton.setBackground(new Color(80, 120, 120));
-        resetButton.setForeground(Color.white);
-        resetButton.setOpaque(true);
-        resetButton.setPreferredSize(new Dimension(24, 60));
-
-
-        this.setLayout(new BorderLayout(1, 1));
+        this.setLayout(new BorderLayout());
+        this.add(topPanel, BorderLayout.NORTH);
         this.add(gameMessage, BorderLayout.SOUTH);
-        this.add(topLeftPanel, BorderLayout.WEST);
-        this.add(topRightPanel, BorderLayout.EAST);
-        this.add(scoreLabel, BorderLayout.CENTER);
-        this.add(gameDirector, BorderLayout.NORTH);
-        //this.add(resetButton, BorderLayout.WEST);
+        this.add(gameDirector, BorderLayout.CENTER);
     }
+
 
     public void setGameMessage(String text) {
         gameMessage.setText(text);
@@ -84,5 +79,11 @@ public class ScoreBoard extends JPanel {
         topRightPanel.setText(text);
     }
 
+    public void setResetButton(JButton resetButton) {
+        this.resetButton = resetButton;
+    }
 
+    public JButton getResetButton() {
+        return resetButton;
+    }
 }

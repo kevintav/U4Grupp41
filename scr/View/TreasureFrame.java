@@ -50,18 +50,14 @@ public class TreasureFrame extends Frame {
 
     @Override
     public String getValue() {
-
         if (isEpic) {
             setValue(100);
             System.out.println("You found a big hidden treasure");
             return String.valueOf(value);
         }
-
         if (allRevealed) {
             return String.valueOf(value);
         }
-
         return "0";
     }
-
 }
