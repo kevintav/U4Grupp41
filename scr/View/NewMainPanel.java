@@ -45,10 +45,10 @@ public class NewMainPanel extends JPanel {
                 frames[i] = new TrapFrame(mainFrame, Color.RED, penalty);
 
             } else if (Objects.equals(indexes[i], "Treasure")) {
-                frames[i] = new TreasureFrame(mainFrame, Color.BLACK, controller.getTreasureNbr(i));
+                frames[i] = new TreasureFrame(mainFrame, Color.YELLOW, controller.getTreasureNbr(i));
 
             } else if (Objects.equals(indexes[i], "Epic")) {
-                frames[i] = new TreasureFrame(mainFrame, Color.BLACK, treasureCount);
+                frames[i] = new TreasureFrame(mainFrame, Color.PINK, treasureCount);
                 frames[i].makeEpicLoot();
 
             } else if (indexes[i].startsWith("Surprise:")) {

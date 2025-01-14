@@ -3,9 +3,6 @@ package Controller;
 import Model.*;
 import View.*;
 import View.Frame;
-import javax.swing.*;
-import java.awt.*;
-import java.util.Arrays;
 
 public class NewController {
     private NewMainFrame view;
@@ -39,9 +36,9 @@ public class NewController {
     }
 
     public void startGame() {
-        player1Name = JOptionPane.showInputDialog("Player 1, what is your name?");
+        player1Name = view.getPlayer1Name();
+        player2Name = view.getPlayer2Name();
         player1 = new Player(player1Name);
-        player2Name = JOptionPane.showInputDialog("Player 2, what is your name?");
         player2 = new Player(player2Name);
         activePlayer = player1;
         scoreBoard.setGameDirector("Välkommen, "+player1Name+", gör ditt drag");
@@ -106,10 +103,6 @@ public class NewController {
             // Hantera andra typer av rutor
             if (frameValue == 0) {
                 scoreBoard.setGameMessage("Miss");
-            } else if (frameValue == 5) {
-                scoreBoard.setGameMessage("Du träffade en fälla och förlorar en besättningsmedlem");
-            } else if (frameValue == 10) {
-                scoreBoard.setGameMessage("Du hittade hela skatten");
             }
         }
 

@@ -10,11 +10,16 @@ public class NewMainFrame extends JFrame {
     private NewMainPanel mainPanel;
     private ScoreBoard scoreBoard;
     private NewController controller;
+    private String player1Name;
+    private String player2Name;
 
 
     public NewMainFrame(int boardWidth, int boardHeight, NewController controller, int sizeOfBoard, String[] indexes) {
         super("Game");
         this.controller = controller;
+
+        this.player1Name = getPlayer1NameFromUser();
+        this.player2Name = getPlayer2NameFromUser();
 
         int scoreboardHeight = 150;
         int frameHeight = boardHeight + scoreboardHeight;
@@ -41,6 +46,22 @@ public class NewMainFrame extends JFrame {
 
     public ScoreBoard getScoreBoard() {
         return scoreBoard;
+    }
+
+    public String getPlayer1NameFromUser() {
+        return JOptionPane.showInputDialog("Player 1, what is your name?");
+    }
+
+    public String getPlayer2NameFromUser() {
+        return JOptionPane.showInputDialog("Player 2, what is your name?");
+    }
+
+    public String getPlayer1Name() {
+        return player1Name;
+    }
+
+    public String getPlayer2Name() {
+        return player2Name;
     }
 }
 
