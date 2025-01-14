@@ -176,10 +176,10 @@ public class NewController {
     }
 
     public void endGame() {
-        scoreBoard.setGameDirector("Spelet är över!");
         mainPanel.revealAllFrames();
 
         Player Winner = determineTheWinner();
+        scoreBoard.setGameDirector("Spelet är över! Vinnaren var: "+Winner.getName());
         if (Winner != null && Winner.getScore() > 0) {
             Hiscore.addScore(Winner.getName(), Winner.getScore());
             Hiscore.saveHighScoreFile("highscores.txt");
@@ -208,10 +208,18 @@ public class NewController {
     }
 
     public Player determineTheWinner() {
-        if (player1.getScore() > player2.getScore()) {
-            return player1;
+        if (player1.getCrewMembers() >= 0 || player2.getCrewMembers() >= 0) {
+            if (player1.getScore() > player2.getScore()) {
+                return player1;
+            } else {
+                return player2;
+            }
         } else {
-            return player2;
+            if (player1.getCrewMembers() > player2.getCrewMembers()) {
+                return player1;
+            } else {
+                return player2;
+            }
         }
     }
 
