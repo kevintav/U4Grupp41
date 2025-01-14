@@ -105,6 +105,10 @@ public class NewMainPanel extends JPanel {
         return frames;
     }
 
+    public Frame[] getFrames() {
+        return frames;
+    }
+
     /**
      * Har som syfte att skapa en form på skatter, den kontrolleras sedan om den valda formen kommer få plats på brädet
      * genom att checka så att inget av indexarna hamnar utanför brädet.

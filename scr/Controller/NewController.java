@@ -131,13 +131,23 @@ public class NewController {
 
             mainPanel.revealFrame(frame);
             addPoints(index);
-
-            if (player1.getCrewMembers() <= 0 || player2.getCrewMembers() <= 0) {
+            if (allFramesRevealed()) {
+                endGame(); //Ends game if all frames are revealed
+            } else if (player1.getCrewMembers() <= 0 || player2.getCrewMembers() <= 0) {
                 endGame();
             } else {
                 changePlayer();
             }
         }
+    }
+
+    private boolean allFramesRevealed() {
+        for (Frame frame : mainPanel.getFrames()) {
+            if (!frame.isClicked()) {
+                return false;
+            }
+        }
+        return true;
     }
 
     private void handleTrap(String penalty) {
