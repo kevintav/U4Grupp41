@@ -62,7 +62,7 @@ public class NewMainPanel extends JPanel {
 
         // Set background color and add frames to the panel
         for (int i = 0; i < frames.length; i++) {
-            //frames[i].setBackground(new Color(230 - i * 3 / 2, 160, 130));
+            frames[i].setBackground(new Color(230 - i * 3 / 2, 160, 130));
             add(frames[i]);
         }
     }
