@@ -90,6 +90,7 @@ public class NewController {
                         pointsToAdd += Integer.parseInt(frame.getValue());
                     }
                 }
+
                 scoreBoard.setGameMessage("Du hittade hela skatten och får " + pointsToAdd + " poäng.");
                 if (pointsToAdd == 100) {
                     scoreBoard.setGameMessage("Du hittade en hemlig skatt! Grattis till: " + pointsToAdd + " poäng!");
@@ -100,8 +101,12 @@ public class NewController {
                 scoreBoard.setGameMessage("Du hittade en del av en skatt! Fortsätt leta efter resten.");
             }
         } else {
+
+            if (clickedFrame instanceof SurpriseFrame) {
+                scoreBoard.setGameMessage(activePlayer.getName()+" hittade en överraskning! Du fick ett extra liv");
+            }
             // Hantera andra typer av rutor
-            if (frameValue == 0) {
+            else if (frameValue == 0) {
                 scoreBoard.setGameMessage("Miss");
             }
         }
@@ -110,7 +115,6 @@ public class NewController {
         activePlayer.addToScore(pointsToAdd); // Förutsätter en `addToScore`-metod
         updateScoreBoard();
     }
-
 
     public void setActionListeners() {
         Frame[] frames = mainPanel.getFrames();
@@ -180,7 +184,7 @@ public class NewController {
 
         Player Winner = determineTheWinner();
         scoreBoard.setGameDirector("Spelet är över! Vinnaren var: "+Winner.getName());
-        if (Winner != null && Winner.getScore() > 0) {
+        if (Winner.getScore() > 0) {
             Hiscore.addScore(Winner.getName(), Winner.getScore());
             Hiscore.saveHighScoreFile("highscores.txt");
         }

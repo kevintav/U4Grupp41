@@ -3,9 +3,8 @@ package View;
 import javax.swing.*;
 import java.awt.*;
 
-public class Frame extends JButton {
+public class Frame extends JButton implements IFrame {
     private boolean clicked = false;
-
 
     /**
      * Constructor som används för att visa index på varje knapp.
@@ -30,10 +29,12 @@ public class Frame extends JButton {
         this.setFont(new Font("Arial", Font.BOLD, 40));
     }
 
+    @Override
     public void setClicked(boolean clicked) {
         this.clicked = clicked;
     }
 
+    @Override
     public void reveal() {
         if (!isClicked()) {
             this.setBackground(Color.WHITE);
@@ -45,11 +46,12 @@ public class Frame extends JButton {
 
     }
 
+    @Override
     public boolean isClicked() {
         return clicked;
     }
 
-
+    @Override
     public String getValue() {
         return String.valueOf(0);
     }

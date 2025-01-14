@@ -51,9 +51,8 @@ public class NewMainPanel extends JPanel {
                 frames[i] = new TreasureFrame(mainFrame, Color.PINK, treasureCount);
                 frames[i].makeEpicLoot();
 
-            } else if (indexes[i].startsWith("Surprise:")) {
-                String effect = indexes[i].split(":")[1];
-                frames[i] = new SurpriseFrame(mainFrame, effect);
+            } else if (indexes[i].startsWith("Surprise")) {
+                frames[i] = new SurpriseFrame(mainFrame);
 
             } else if (Objects.equals(indexes[i], "Empty")) {
                 frames[i] = new Frame(mainFrame, Color.BLACK);

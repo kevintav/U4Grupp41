@@ -53,7 +53,7 @@ public class BoardManager {
         while (traps < 3) {
             for (int i = 0; i < sizeOfBoard * sizeOfBoard; i++) {
                 int randomPlace = randomize.nextInt(sizeOfBoard * sizeOfBoard);
-                if (randomPlace >= 85 && frames[i] == null && traps < 5) {
+                if (randomPlace >= 85 && frames[i] == null && traps < 9) {
                     TrapType trapType = TrapType.values()[randomize.nextInt(TrapType.values().length)];
                     frames[i] = "Trap:"+trapType.name();
                     traps++;
@@ -66,8 +66,7 @@ public class BoardManager {
         while (surprises < 3) { // Limit to 3 surprises
             int randomIndex = randomize.nextInt(sizeOfBoard * sizeOfBoard);
             if (frames[randomIndex] == null) {
-                SurpriseType surpriseType = SurpriseType.values()[randomize.nextInt(SurpriseType.values().length)];
-                frames[randomIndex] = "Surprise:"+surpriseType.name();
+                frames[randomIndex] = "Surprise";
                 surprises++;
             }
         }
