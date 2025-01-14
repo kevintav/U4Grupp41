@@ -187,9 +187,11 @@ public class NewController {
         }
 
         int sizeOfBoard = 10;
+        boardManager = new BoardManager(sizeOfBoard);
         view = new NewMainFrame(800, 800, this, sizeOfBoard, boardManager.getFrames());
         scoreBoard = view.getScoreBoard();
         mainPanel = view.getMainPanel();
+
         scoreBoard.setGameDirector("Välkommen, "+player1Name+", gör ditt drag");
         scoreBoard.getResetButton().addActionListener(e -> resetGame());
         setActionListeners();
