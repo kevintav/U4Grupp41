@@ -76,7 +76,7 @@ public class NewController {
             boolean allRevealed = true;
 
             // Kontrollera om alla delar av skatten är avslöjade
-            for (Frame frame : mainPanel.getBoard()) {
+            for (Frame frame : mainPanel.getFrames()) {
                 if (frame instanceof TreasureFrame && frame.getPartOfTreasure() == treasureNbr && !frame.isClicked()) {
                     allRevealed = false;
                     break;
@@ -85,7 +85,7 @@ public class NewController {
 
             if (allRevealed) {
                 // Lägg till poäng för hela skatten
-                for (Frame frame : mainPanel.getBoard()) {
+                for (Frame frame : mainPanel.getFrames()) {
                     if (frame instanceof TreasureFrame && frame.getPartOfTreasure() == treasureNbr) {
                         pointsToAdd += Integer.parseInt(frame.getValue());
                     }
@@ -113,7 +113,7 @@ public class NewController {
 
 
     public void setActionListeners() {
-        Frame[] frames = mainPanel.getBoard();
+        Frame[] frames = mainPanel.getFrames();
         for (int i = 0; i < frames.length; i++) {
             final int index = i;
             frames[i].addActionListener(e -> handleFrameClick(index));

@@ -17,7 +17,6 @@ public class NewMainFrame extends JFrame {
     public NewMainFrame(int boardWidth, int boardHeight, NewController controller, int sizeOfBoard, String[] indexes) {
         super("Game");
         this.controller = controller;
-
         this.player1Name = getPlayer1NameFromUser();
         this.player2Name = getPlayer2NameFromUser();
 

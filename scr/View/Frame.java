@@ -19,22 +19,15 @@ public class Frame extends JButton {
     /**
      * Constructor som används för att skapa en ram i MainPanel.
      *
-     * @param mainFrame
+     * @param NewMainFrame
      * @param color     Author Christoffer Björnheimer
      */
-    public Frame(NewMainFrame mainFrame, Color color) {
+    public Frame(NewMainFrame NewMainFrame, Color color) {
         this.setBackground(color);
         this.setVisible(true);
         this.setForeground(Color.WHITE);
         this.setMargin(new Insets(0, 0, 0, 0));
         this.setFont(new Font("Arial", Font.BOLD, 40));
-    }
-
-    public void hidePanel() {
-        clicked = false;
-        this.setBackground(new Color(120, 130, 130));
-        this.setText("");
-
     }
 
     public void setClicked(boolean clicked) {

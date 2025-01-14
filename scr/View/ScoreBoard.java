@@ -4,8 +4,6 @@ import javax.swing.*;
 import java.awt.*;
 
 public class ScoreBoard extends JPanel {
-    private JLabel scoreLabel;
-    private int score = 0;
     private JLabel topRightPanel;
     private JLabel topLeftPanel;
     private JLabel gameMessage;
