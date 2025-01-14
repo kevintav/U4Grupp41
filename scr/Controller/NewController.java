@@ -208,7 +208,7 @@ public class NewController {
     }
 
     public Player determineTheWinner() {
-        if (player1.getCrewMembers() >= 0) {
+        if (player1.getScore() > player2.getScore()) {
             return player1;
         } else {
             return player2;
